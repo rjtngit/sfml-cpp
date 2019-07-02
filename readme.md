@@ -1,0 +1,1 @@
+Setup guide: https://www.sfml-dev.org/tutorials/2.5/start-vc.php
