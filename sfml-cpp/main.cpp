@@ -1,23 +1,13 @@
-#include <SFML/Graphics.hpp>
+#include "GameInstance.h"
 
 int main()
 {
-	sf::RenderWindow window(sf::VideoMode(200, 200), "SFML works!");
-	sf::CircleShape shape(100.f);
-	shape.setFillColor(sf::Color::Green);
+	GameInstance gameInstance;
 
-	while (window.isOpen())
+	while (gameInstance.IsRunning())
 	{
-		sf::Event event;
-		while (window.pollEvent(event))
-		{
-			if (event.type == sf::Event::Closed)
-				window.close();
-		}
-
-		window.clear();
-		window.draw(shape);
-		window.display();
+		gameInstance.Update();
+		gameInstance.Render();
 	}
 
 	return 0;
