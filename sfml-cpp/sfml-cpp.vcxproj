@@ -135,11 +135,22 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="GameComponent.cpp" />
     <ClCompile Include="GameInstance.cpp" />
+    <ClCompile Include="GameObject.cpp" />
+    <ClCompile Include="Level.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Paths.cpp" />
+    <ClCompile Include="TransformComponent.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="GameComponent.h" />
     <ClInclude Include="GameInstance.h" />
+    <ClInclude Include="GameObject.h" />
+    <ClInclude Include="json.hpp" />
+    <ClInclude Include="Level.h" />
+    <ClInclude Include="Paths.h" />
+    <ClInclude Include="TransformComponent.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

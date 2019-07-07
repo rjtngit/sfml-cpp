@@ -1,21 +1,63 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="src">
+    <Filter Include="include">
+      <UniqueIdentifier>{7010fbdf-8a66-4a16-a201-5c5aa8862896}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source">
       <UniqueIdentifier>{190d2a80-0239-4534-b400-cc4601aab129}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Engine">
+      <UniqueIdentifier>{fd6b3c54-9907-450e-ad28-f283aa3ceb9c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Game">
+      <UniqueIdentifier>{2cb5d23d-b36a-4393-b480-8d1b42796c4e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
     <ClCompile Include="GameInstance.cpp">
-      <Filter>src</Filter>
+      <Filter>Source\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObject.cpp">
+      <Filter>Source\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Level.cpp">
+      <Filter>Source\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Paths.cpp">
+      <Filter>Source\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="GameComponent.cpp">
+      <Filter>Source\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="TransformComponent.cpp">
+      <Filter>Source\Engine</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="json.hpp">
+      <Filter>include</Filter>
+    </ClInclude>
     <ClInclude Include="GameInstance.h">
-      <Filter>src</Filter>
+      <Filter>Source\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObject.h">
+      <Filter>Source\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Level.h">
+      <Filter>Source\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Paths.h">
+      <Filter>Source\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="GameComponent.h">
+      <Filter>Source\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="TransformComponent.h">
+      <Filter>Source\Engine</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

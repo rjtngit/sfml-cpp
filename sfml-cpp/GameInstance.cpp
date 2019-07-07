@@ -1,7 +1,11 @@
 #include "GameInstance.h"
+#include "Level.h"
+#include "Paths.h"
 
-GameInstance::GameInstance()
-: window(sf::VideoMode(640, 360), "")
+GameInstance::GameInstance() 
+	: 
+	window(sf::VideoMode(640, 360), ""),
+	activeLevel(std::make_unique<Level>(Paths::GetLevelPath("Start.lvl")))
 {
 	deltaClock.restart();
 }

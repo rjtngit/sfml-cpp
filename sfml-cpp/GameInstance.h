@@ -2,6 +2,7 @@
 
 #include "SFML/Graphics.hpp"
 #include "SFML/System.hpp"
+#include "Level.h"
 
 class GameInstance
 {
@@ -12,6 +13,7 @@ public:
 	bool IsRunning() const;
 
 private:
+	std::unique_ptr<Level> activeLevel;
 	sf::RenderWindow window;
 	sf::Clock deltaClock;
 };
