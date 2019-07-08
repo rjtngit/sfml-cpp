@@ -36,6 +36,9 @@
     <ClCompile Include="TransformComponent.cpp">
       <Filter>Source\Engine</Filter>
     </ClCompile>
+    <ClCompile Include="PlayerComponent.cpp">
+      <Filter>Source\Game</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="json.hpp">
@@ -58,6 +61,9 @@
     </ClInclude>
     <ClInclude Include="TransformComponent.h">
       <Filter>Source\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerComponent.h">
+      <Filter>Source\Game</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

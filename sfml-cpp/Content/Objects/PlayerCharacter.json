@@ -1,0 +1,11 @@
+{
+    "name" : "PlayerCharacter",
+    "components" : [
+    	{
+    		"class" : "PlayerComponent"
+    	},
+    	{
+    		"class" : "SpriteComponent"
+    	}
+    ]
+}

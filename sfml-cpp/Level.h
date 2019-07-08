@@ -7,7 +7,8 @@ class Level
 {
 public:
 	Level(std::string path);
-	GameObject* SpawnObject(int x, int y);
+	GameObject* SpawnObject(std::string name, int x, int y);
+	GameObject* SpawnObjectFromFile(std::string path, int overrideX, int overrideY);
 
 private:
 	std::vector<std::unique_ptr<GameObject>> objects;

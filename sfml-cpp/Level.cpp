@@ -5,9 +5,6 @@
 #include "Paths.h"
 #include "GameObject.h"
 
-
-// --- METHODS --- //
-
 Level::Level(std::string path)
 {
 	std::ifstream file(path);
@@ -34,8 +31,7 @@ Level::Level(std::string path)
 			{
 				// create object
 				std::string objPath = Paths::FindObjectPath(objData, mapRow[i]);
-				GameObject* obj = SpawnObject(x, y);
-				obj->InitFromFile(objPath);
+				GameObject* obj = SpawnObjectFromFile(objPath, x, y);
 
 				++x;
 			}
@@ -50,8 +46,22 @@ Level::Level(std::string path)
 	}
 }
 
-GameObject* Level::SpawnObject(int x, int y)
+GameObject* Level::SpawnObject(std::string name, int x, int y)
 {
-	objects.push_back(std::make_unique<GameObject>(x, y));
-	return objects[objects.size() - 1].get();
+	objects.push_back(std::make_unique<GameObject>());
+	GameObject* obj = objects[objects.size() - 1].get();
+
+	obj->Init(name, x, y);
+
+	return obj;
+}
+
+GameObject* Level::SpawnObjectFromFile(std::string path, int overrideX, int overrideY)
+{
+	objects.push_back(std::make_unique<GameObject>());
+	GameObject* obj = objects[objects.size() - 1].get();
+
+	obj->InitFromFile(path, overrideX, overrideY);
+
+	return obj;
 }

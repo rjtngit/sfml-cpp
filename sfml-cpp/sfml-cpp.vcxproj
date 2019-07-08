@@ -141,12 +141,14 @@
     <ClCompile Include="Level.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Paths.cpp" />
+    <ClCompile Include="PlayerComponent.cpp" />
     <ClCompile Include="TransformComponent.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameComponent.h" />
     <ClInclude Include="GameInstance.h" />
     <ClInclude Include="GameObject.h" />
+    <ClInclude Include="PlayerComponent.h" />
     <ClInclude Include="json.hpp" />
     <ClInclude Include="Level.h" />
     <ClInclude Include="Paths.h" />
