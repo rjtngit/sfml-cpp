@@ -29,10 +29,13 @@ namespace GameComponentLoader
 		static StaticFunctionMap m;
 		BaseFunctionMapper()
 		{
+			// Tell the compiler not to optimize m away
 			(void)m;
 		}
 	};
 
+	// Must be defined here because it is a templated variable 
+	// https://stackoverflow.com/questions/1553854/template-static-variable
 	template<typename T, const char* NAME>
 	StaticFunctionMap BaseFunctionMapper<T, NAME>::m = StaticFunctionMap(NAME, T::CreateNew);
 }
