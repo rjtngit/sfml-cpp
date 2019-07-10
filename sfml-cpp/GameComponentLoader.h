@@ -10,9 +10,9 @@ namespace GameComponentLoader
 
 	class FunctionMapper {
 	public:
-		FunctionMapper(const char *name, std::function<GameComponent*()> createFunc)
+		FunctionMapper(const char *name, std::function<GameComponent*()> func)
 		{
-			get_map().insert(std::make_pair(name, createFunc));
+			get_map().insert(std::make_pair(name, func));
 		}
 	};
 
@@ -27,7 +27,7 @@ namespace GameComponentLoader
 	};
 
 	template<typename T, const char* NAME>
-	FunctionMapper BaseComponent<T, NAME>::m = FunctionMapper(NAME, _PlayerComponent::CreateNew);
+	FunctionMapper BaseComponent<T, NAME>::m = FunctionMapper(NAME, T::CreateNew);
 }
 
 #define DECLARE_LOADABLE(ClassName) \

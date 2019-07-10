@@ -1,9 +1,12 @@
 #pragma once
 #include "GameComponent.h"
+#include "GameComponentLoader.h"
+
 
 class TransformComponent : public GameComponent
 {
 public:
+	TransformComponent(){};
 	TransformComponent(int x, int y);
 	void Update(float deltaTime) override {};
 
@@ -13,3 +16,5 @@ public:
 	int y = 0;
 
 };
+
+DECLARE_LOADABLE(TransformComponent)

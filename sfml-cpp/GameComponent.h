@@ -8,7 +8,6 @@ class GameComponent
 {
 
 public:
-	virtual ~GameComponent() = default;
 	virtual void Update(float deltaTime) = 0;
 
 };
