@@ -3,12 +3,18 @@
 #include <map>
 #include <functional>
 
+// Based on these Stack Overflow posts:
+// https://stackoverflow.com/questions/34858341/c-compile-time-list-of-subclasses-of-a-class
+// https://stackoverflow.com/questions/9209052/static-field-initialization-in-template-class-in-c/9209352#9209352
+
+
 namespace GameComponentLoader
 {
 	GameComponent* CreateNew(std::string className);
 	std::map<std::string, std::function<GameComponent*()>> &get_map();
 
-	class StaticFunctionMap {
+	class StaticFunctionMap 
+	{
 	public:
 		StaticFunctionMap(const char *name, std::function<GameComponent*()> func)
 		{
@@ -17,7 +23,8 @@ namespace GameComponentLoader
 	};
 
 	template<typename T, const char* NAME>
-	class BaseFunctionMapper {
+	class BaseFunctionMapper 
+	{
 	protected:
 		static StaticFunctionMap m;
 		BaseFunctionMapper()
@@ -39,7 +46,6 @@ namespace GameComponentLoader \
 	{ \
 	public: \
 		ClassName ## FunctionMapper () : BaseFunctionMapper() {} \
- \
 		static GameComponent* CreateNew() \
 		{ \
 			return new ClassName ## (); \
