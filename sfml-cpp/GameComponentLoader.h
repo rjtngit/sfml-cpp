@@ -8,41 +8,37 @@ namespace GameComponentLoader
 	GameComponent* CreateNew(std::string className);
 	std::map<std::string, std::function<GameComponent*()>> &get_map();
 
-	class FunctionMapper {
+	class StaticFunctionMap {
 	public:
-		FunctionMapper(const char *name, std::function<GameComponent*()> func)
+		StaticFunctionMap(const char *name, std::function<GameComponent*()> func)
 		{
 			get_map().insert(std::make_pair(name, func));
 		}
 	};
 
 	template<typename T, const char* NAME>
-	class BaseComponent {
+	class BaseFunctionMapper {
 	protected:
-		static FunctionMapper m;
-		BaseComponent()
+		static StaticFunctionMap m;
+		BaseFunctionMapper()
 		{
 			(void)m;
 		}
 	};
 
 	template<typename T, const char* NAME>
-	FunctionMapper BaseComponent<T, NAME>::m = FunctionMapper(NAME, T::CreateNew);
+	StaticFunctionMap BaseFunctionMapper<T, NAME>::m = StaticFunctionMap(NAME, T::CreateNew);
 }
 
 #define DECLARE_LOADABLE(ClassName) \
 namespace GameComponentLoader \
 { \
-	static const char _ ## ClassName ## Str[] = #ClassName; \
-	static GameComponent* _ ## ClassName ## _Create() \
-	{ \
-		return nullptr; \
-	} \
+	static const char ClassName ## Str[] = #ClassName; \
   \
-	class _ ## ClassName ##  : public BaseComponent<_ ## ClassName ## , _ ## ClassName ## Str> \
+	class ClassName ## FunctionMapper : public BaseFunctionMapper<ClassName ## FunctionMapper, ClassName ## Str> \
 	{ \
 	public: \
-		_ ## ClassName ## () : BaseComponent() {} \
+		ClassName ## FunctionMapper () : BaseFunctionMapper() {} \
  \
 		static GameComponent* CreateNew() \
 		{ \
