@@ -2,6 +2,7 @@
 #include <map>
 #include <functional>
 #include <string>
+#include <set>
 
 class GameComponent
 {
@@ -12,9 +13,3 @@ public:
 
 };
 
-class BaseComponentLoader
-{
-public:
-	static GameComponent* CreateNew(std::string className);
-	static std::map<std::string, std::function<GameComponent*()>> LoaderFuncs;
-};

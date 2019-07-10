@@ -7,6 +7,7 @@
 #include "json.hpp"
 #include <string>
 #include <memory>
+#include "GameComponentLoader.h"
 
 GameObject::GameObject()
 {
@@ -68,7 +69,7 @@ void GameObject::InitFromFile(std::string path, int overrideX, int overrideY)
 
 GameComponent* GameObject::AddComponent(std::string className)
 {
-	components.push_back(std::unique_ptr<GameComponent>(BaseComponentLoader::CreateNew(className)));
+	components.push_back(std::unique_ptr<GameComponent>(GameComponentLoader::CreateNew(className)));
 	return components[components.size() - 1].get();
 }
 
