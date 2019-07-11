@@ -143,6 +143,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Paths.cpp" />
     <ClCompile Include="PlayerComponent.cpp" />
+    <ClCompile Include="SpriteComponent.cpp" />
     <ClCompile Include="TransformComponent.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -154,6 +155,7 @@
     <ClInclude Include="json.hpp" />
     <ClInclude Include="Level.h" />
     <ClInclude Include="Paths.h" />
+    <ClInclude Include="SpriteComponent.h" />
     <ClInclude Include="TransformComponent.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

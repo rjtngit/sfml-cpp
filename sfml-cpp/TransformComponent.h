@@ -1,6 +1,5 @@
 #pragma once
 #include "GameComponent.h"
-#include "GameComponentLoader.h"
 
 
 class TransformComponent : public GameComponent
@@ -16,5 +15,3 @@ public:
 	int y = 0;
 
 };
-
-DECLARE_LOADABLE(TransformComponent)

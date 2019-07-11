@@ -9,7 +9,7 @@ namespace GameComponentLoader
 		auto it = map.find(className);
 		if (it == map.end())
 		{
-			std::cout << "GameComponentLoader::CreateNew: " << className << " not found. Did you forget to mark it with DECLARE_LOADABLE?" << std::endl;
+			std::cout << "GameComponentLoader::CreateNew: " << className << " not found. Did you mark it with DECLARE_LOADABLE?" << std::endl;
 			return nullptr;
 		}
 

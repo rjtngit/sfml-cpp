@@ -42,6 +42,9 @@
     <ClCompile Include="GameComponentLoader.cpp">
       <Filter>Source\Engine</Filter>
     </ClCompile>
+    <ClCompile Include="SpriteComponent.cpp">
+      <Filter>Source\Game</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="json.hpp">
@@ -70,6 +73,9 @@
     </ClInclude>
     <ClInclude Include="GameComponentLoader.h">
       <Filter>Source\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="SpriteComponent.h">
+      <Filter>Source\Game</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

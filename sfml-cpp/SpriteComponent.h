@@ -1,11 +1,14 @@
 #pragma once
 #include "GameComponent.h"
 
-class PlayerComponent : public GameComponent
+
+class SpriteComponent : public GameComponent
 {
 	
 public:
 	void Update(float deltaTime) override {};
+
 };
 
-DECLARE_LOADABLE(PlayerComponent);
+
+DECLARE_LOADABLE(SpriteComponent);
