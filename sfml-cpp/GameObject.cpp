@@ -7,7 +7,8 @@
 #include "json.hpp"
 #include <string>
 #include <memory>
-#include "GameComponentLoader.h"
+#include "GameComponent.h"
+
 
 GameObject::GameObject()
 {

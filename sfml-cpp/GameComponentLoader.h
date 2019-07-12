@@ -19,7 +19,7 @@ namespace GameComponentLoader
 	class StaticFunctionMap 
 	{
 	public:
-		StaticFunctionMap(const char *name, std::function<GameComponent*()> func)
+		StaticFunctionMap(std::function<GameComponent*()> func, const char *name)
 		{
 			get_map().insert(std::make_pair(name, func));
 		}
@@ -40,26 +40,18 @@ namespace GameComponentLoader
 	// Must be defined here because it is a templated variable 
 	// https://stackoverflow.com/questions/1553854/template-static-variable
 	template<typename T, const char* NAME>
-	StaticFunctionMap BaseFunctionMapper<T, NAME>::m = StaticFunctionMap(NAME, T::CreateNew);
+	StaticFunctionMap BaseFunctionMapper<T, NAME>::m = StaticFunctionMap(T::CreateNew, NAME);
 }
 
 
 #define DECLARE_LOADABLE(ClassType) \
-namespace GameComponentLoader \
+static constexpr char _ClassName[] = # ClassType; \
+class _FunctionMapper : public GameComponentLoader::BaseFunctionMapper<_FunctionMapper, _ClassName> \
 { \
-	namespace Loadable ## ClassType \
+public: \
+	_FunctionMapper() : BaseFunctionMapper() {} \
+	static ClassType ## * CreateNew() \
 	{ \
-		static const char ClassName[] = #ClassType;  \
-		class FunctionMapper : public BaseFunctionMapper<FunctionMapper, ClassName>  \
-		{  \
-		public:  \
-			FunctionMapper () : BaseFunctionMapper() {} \
-			static ClassType ## * CreateNew()  \
-			{  \
-				return new ClassType ## ();  \
-			} \
-		};  \
-	}  \
-}  \
-
-
+		return new ClassType ## (); \
+	} \
+}; \
