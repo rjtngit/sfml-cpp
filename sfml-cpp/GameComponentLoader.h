@@ -43,9 +43,9 @@ namespace GameComponentLoader
 	StaticFunctionMap BaseFunctionMapper<T, NAME>::m = StaticFunctionMap(T::CreateNew, NAME);
 }
 
-
+// Use this macro at the beginning of a GameComponent's class definition so it can be created with GameComponentLoader::CreateNew()
 #define DECLARE_LOADABLE(ClassType) \
-static constexpr char _ClassName[] = # ClassType; \
+static constexpr const char _ClassName[] = # ClassType; \
 class _FunctionMapper : public GameComponentLoader::BaseFunctionMapper<_FunctionMapper, _ClassName> \
 { \
 public: \

@@ -4,6 +4,7 @@
 
 class TransformComponent : public GameComponent
 {
+
 public:
 	TransformComponent(){};
 	TransformComponent(int x, int y);
