@@ -1,5 +1,4 @@
 #include "GameComponentLoader.h"
-#include <iostream>
 
 namespace GameComponentLoader
 {
@@ -9,16 +8,16 @@ namespace GameComponentLoader
 		auto it = map.find(className);
 		if (it == map.end())
 		{
-			std::cout << "GameComponentLoader::CreateNew: " << className << " not found. Did you mark it with DECLARE_LOADABLE?" << std::endl;
+			std::cout << "GameComponentLoader::CreateNew: " << className << " not found. Did you mark it with LOADABLE_CLASS?" << std::endl;
 			return nullptr;
 		}
 
 		return it->second();
 	}
 
-	std::map<std::string, std::function<GameComponent*()>> & GameComponentLoader::get_map()
+	std::unordered_map<std::string, std::function<GameComponent*()>> & GameComponentLoader::get_map()
 	{
-		static std::map<std::string, std::function<GameComponent*()>> map;
+		static std::unordered_map<std::string, std::function<GameComponent*()>> map;
 		return map;
 	}
 

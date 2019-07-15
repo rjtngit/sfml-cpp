@@ -1,10 +1,8 @@
 #pragma once
 #include "GameComponent.h"
 
-
 class TransformComponent : public GameComponent
 {
-
 public:
 	TransformComponent(){};
 	TransformComponent(int x, int y);
@@ -14,5 +12,4 @@ public:
 public: 
 	int x = 0;
 	int y = 0;
-
 };

@@ -44,9 +44,33 @@ void GameObject::InitFromFile(std::string path)
 		if (jsonData.contains("y")) this->transform->y = jsonData["y"].get<int>();
 
 		// load components
-		for (auto& compData : jsonData["components"]) {
+		for (auto& compData : jsonData["components"])
+		{
 			std::string className = compData["class"].get<std::string>();
 			GameComponent* comp = AddComponent(className);
+
+			// init variables
+			auto it = compData.begin();
+			while (it != compData.end())
+			{
+				if (it.key() == "class")
+				{
+					it++;
+					continue;
+				}
+
+				if (it->is_string())
+				{
+					comp->_SetString(it.key(), it->get<std::string>());
+				}
+
+				if (it->is_number_integer())
+				{
+					comp->_SetInt(it.key(), it->get<int>());
+				}
+
+				it++;
+			}
 		}
 
 	}

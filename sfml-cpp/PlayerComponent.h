@@ -3,7 +3,7 @@
 
 class PlayerComponent : public GameComponent
 {
-	DECLARE_LOADABLE(PlayerComponent);
+	LOADABLE_CLASS(PlayerComponent)
 
 public:
 	void Update(float deltaTime) override {};

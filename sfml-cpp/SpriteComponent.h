@@ -1,14 +1,21 @@
 #pragma once
 #include "GameComponent.h"
-
+#include <string>
+#include <iostream>
+#include <array>
+#include <map>
 
 class SpriteComponent : public GameComponent
 {
-	DECLARE_LOADABLE(SpriteComponent);
+	LOADABLE_CLASS(SpriteComponent)
 
 public:
 	void Update(float deltaTime) override {};
 
+	// VARIABLES
+public:
+	LOADABLE_STRING(spritePath)
+	std::string spritePath;
 };
 
 

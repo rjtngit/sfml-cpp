@@ -1,1 +1,6 @@
-#define DECLARE_LOADABLE(ClassType)
+#define LOADABLE_CLASS(ClassType)
+#define LOADABLE_CLASS_BASE()
+#define LOADABLE_CLASS_VARMAP(ClassType, MapPostfix, ParamType)
+#define LOADABLE_VAR(VarName, MapPostfix, ParamType) 
+#define LOADABLE_STRING(VarName)
+#define LOADABLE_INT(VarName)
