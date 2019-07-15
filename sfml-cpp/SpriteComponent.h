@@ -1,9 +1,6 @@
 #pragma once
 #include "GameComponent.h"
 #include <string>
-#include <iostream>
-#include <array>
-#include <map>
 
 class SpriteComponent : public GameComponent
 {

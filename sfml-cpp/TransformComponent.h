@@ -4,8 +4,6 @@
 class TransformComponent : public GameComponent
 {
 public:
-	TransformComponent(){};
-	TransformComponent(int x, int y);
 	void Update(float deltaTime) override {};
 
 	// VARIABLES

@@ -2,10 +2,10 @@
     "name" : "PlayerCharacter",
     "components" : [
     	{
-    		"class" : "PlayerComponent"
+    		"_class" : "PlayerComponent"
     	},
     	{
-    		"class" : "SpriteComponent",
+    		"_class" : "SpriteComponent",
     		"spritePath" : "Sprites/player.png"
     	}
     ]

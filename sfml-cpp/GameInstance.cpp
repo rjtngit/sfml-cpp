@@ -20,6 +20,7 @@ void GameInstance::Update()
 	}
 
 	sf::Time dt = deltaClock.restart();
+	activeLevel->Update(dt.asSeconds());
 }
 
 void GameInstance::Render()

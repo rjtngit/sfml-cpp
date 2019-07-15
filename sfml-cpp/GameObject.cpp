@@ -8,6 +8,7 @@
 #include <string>
 #include <memory>
 #include "GameComponent.h"
+#include <algorithm>
 
 
 GameObject::GameObject()
@@ -17,7 +18,9 @@ GameObject::GameObject()
 
 void GameObject::Init(std::string name, int x, int y)
 {
-	transform = AddComponent<TransformComponent>(x, y);
+	transform = AddComponent<TransformComponent>();
+	transform->x = x;
+	transform->y = y;
 
 	initialized = true;
 }
@@ -29,7 +32,7 @@ void GameObject::Init(int x, int y)
 
 void GameObject::InitFromFile(std::string path)
 {
-	transform = AddComponent<TransformComponent>(0, 0);
+	transform = AddComponent<TransformComponent>();
 
 	std::ifstream file(path);
 	if (file.is_open())
@@ -46,14 +49,14 @@ void GameObject::InitFromFile(std::string path)
 		// load components
 		for (auto& compData : jsonData["components"])
 		{
-			std::string className = compData["class"].get<std::string>();
+			std::string className = compData["_class"].get<std::string>();
 			GameComponent* comp = AddComponent(className);
 
 			// init variables
 			auto it = compData.begin();
 			while (it != compData.end())
 			{
-				if (it.key() == "class")
+				if (it.key() == "_class")
 				{
 					it++;
 					continue;
@@ -94,7 +97,38 @@ void GameObject::InitFromFile(std::string path, int overrideX, int overrideY)
 
 GameComponent* GameObject::AddComponent(std::string className)
 {
-	components.push_back(std::unique_ptr<GameComponent>(GameComponentLoader::CreateNew(className)));
-	return components[components.size() - 1].get();
+	newComponents.push_back(std::unique_ptr<GameComponent>(GameComponentLoader::CreateNew(className)));
+	return newComponents[newComponents.size() - 1].get();
+}
+
+void GameObject::DeleteComponents()
+{
+	// Remove components pending deletion
+	for(auto& comp : deletedComponents)
+	{
+		std::remove(deletedComponents.begin(), deletedComponents.end(), comp);
+	}
+	deletedComponents.clear();
+}
+
+void GameObject::StartComponents()
+{
+	// Start and move new components to active list
+	for(auto& comp : newComponents)
+	{
+		comp->Start();
+	}
+	components.reserve(components.size() + newComponents.size());
+    std::move(std::begin(newComponents), std::end(newComponents), std::back_inserter(components));
+    newComponents.clear();
+}
+
+void GameObject::Update(float deltaTime)
+{
+	// Update components
+	for(auto& comp : components)
+	{
+		comp->Update(deltaTime);
+	}
 }
 

@@ -4,6 +4,7 @@
 #include <sstream>
 #include "Paths.h"
 #include "GameObject.h"
+#include <algorithm>
 
 Level::Level(std::string path)
 {
@@ -48,8 +49,8 @@ Level::Level(std::string path)
 
 GameObject* Level::SpawnObject(std::string name, int x, int y)
 {
-	objects.push_back(std::make_unique<GameObject>());
-	GameObject* obj = objects[objects.size() - 1].get();
+	newObjects.push_back(std::make_unique<GameObject>());
+	GameObject* obj = newObjects[newObjects.size() - 1].get();
 
 	obj->Init(name, x, y);
 
@@ -58,10 +59,46 @@ GameObject* Level::SpawnObject(std::string name, int x, int y)
 
 GameObject* Level::SpawnObjectFromFile(std::string path, int overrideX, int overrideY)
 {
-	objects.push_back(std::make_unique<GameObject>());
-	GameObject* obj = objects[objects.size() - 1].get();
+	newObjects.push_back(std::make_unique<GameObject>());
+	GameObject* obj = newObjects[newObjects.size() - 1].get();
 
 	obj->InitFromFile(path, overrideX, overrideY);
 
 	return obj;
+}
+
+void Level::Update(float deltaTime)
+{
+	// Remove game objects pending deletion
+	for(auto& obj : deletedObjects)
+	{
+		std::remove(objects.begin(), objects.end(), obj);
+	}
+	deletedObjects.clear();
+
+	// Move new game objects to active list
+	objects.reserve(objects.size() + newObjects.size());
+    std::move(std::begin(newObjects), std::end(newObjects), std::back_inserter(objects));
+    newObjects.clear();
+	
+	// Remove components pending deletion
+	for(auto& obj : objects)
+	{
+		obj->DeleteComponents();
+	}
+
+	// Start new components
+	for(auto& obj : objects)
+	{
+		obj->StartComponents();
+	}
+
+	// Update game objects
+	for(auto& obj : objects)
+	{
+		if(obj->IsInitialized())
+		{
+			obj->Update(deltaTime);
+		}
+	}
 }

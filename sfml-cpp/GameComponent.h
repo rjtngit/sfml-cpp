@@ -6,6 +6,11 @@ class GameComponent
 	LOADABLE_CLASS_BASE()
 
 public:
-	virtual void Update(float deltaTime) = 0;
+
+	// Called when component starts ticking
+	virtual void Start() {};
+
+	// Called every frame
+	virtual void Update(float deltaTime) {};
 
 };
