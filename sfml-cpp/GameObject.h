@@ -16,17 +16,17 @@ public:
 
 	bool IsInitialized() const { return initialized; }
 
-	std::shared_ptr<GameComponent> AddComponent(std::string className);
+	std::weak_ptr<GameComponent> AddComponent(std::string className);
 
 	template<typename T>
-	std::shared_ptr<T> AddComponent();
+	std::weak_ptr<T> AddComponent();
 
 	template<typename T>
-	std::shared_ptr<T> GetComponent();
+	std::weak_ptr<T> GetComponent();
 
-	std::shared_ptr<TransformComponent> GetTransform() { return transform;  }
+	std::weak_ptr<TransformComponent> GetTransform() { return transform;  }
 
-	void DestroyComponent(std::shared_ptr<GameComponent> component);
+	void DestroyComponent(std::weak_ptr<GameComponent> component);
 
 	void Update_DestroyComponents();
 	void Update_StartComponents();
@@ -37,7 +37,7 @@ private:
 	bool initialized = false;
 	std::string name;
 
-	std::shared_ptr<TransformComponent> transform = nullptr;
+	std::weak_ptr<TransformComponent> transform;
 
 	std::vector<std::shared_ptr<GameComponent>> activeComponents;
 	std::vector<std::shared_ptr<GameComponent>> newComponents;
@@ -49,7 +49,7 @@ private:
 
 // TEMPLATES
 template<typename T>
-std::shared_ptr<T> GameObject::AddComponent()
+std::weak_ptr<T> GameObject::AddComponent()
 {
 	std::shared_ptr<T> comp = std::make_shared<T>();
 	comp->Init(shared_from_this());
@@ -58,7 +58,7 @@ std::shared_ptr<T> GameObject::AddComponent()
 }
 
 template<typename T>
-std::shared_ptr<T> GameObject::GetComponent()
+std::weak_ptr<T> GameObject::GetComponent()
 {
 	for (auto& comp : activeComponents) 
 	{

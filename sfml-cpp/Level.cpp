@@ -25,15 +25,15 @@ Level::Level(std::string path)
 		// iterate over tiles and create objects
 		std::istringstream mapStream(mapData);
 		std::string mapRow;
-		int x = 0;
-		int y = 0;
+		float x = 0;
+		float y = 0;
 		while (std::getline(mapStream, mapRow))
 		{
 			for (size_t i = 0; i < mapRow.size(); ++i) 
 			{
 				// create object
 				std::string objPath = Paths::FindObjectPath(objData, mapRow[i]);
-				std::shared_ptr<GameObject> obj = SpawnObjectFromFile(objPath, x, y);
+				std::weak_ptr<GameObject> obj = SpawnObjectFromFile(objPath, x, y);
 
 				++x;
 			}
@@ -48,7 +48,7 @@ Level::Level(std::string path)
 	}
 }
 
-std::shared_ptr<GameObject> Level::SpawnObject(std::string name, int x, int y)
+std::weak_ptr<GameObject> Level::SpawnObject(std::string name, float x, float y)
 {
 	std::shared_ptr<GameObject> obj = std::make_shared<GameObject>();
 	newObjects.push_back(obj);
@@ -58,7 +58,7 @@ std::shared_ptr<GameObject> Level::SpawnObject(std::string name, int x, int y)
 	return obj;
 }
 
-std::shared_ptr<GameObject> Level::SpawnObjectFromFile(std::string path, int overrideX, int overrideY)
+std::weak_ptr<GameObject> Level::SpawnObjectFromFile(std::string path, float overrideX, float overrideY)
 {
 	std::shared_ptr<GameObject> obj = std::make_shared<GameObject>();
 	newObjects.push_back(obj);
@@ -68,9 +68,9 @@ std::shared_ptr<GameObject> Level::SpawnObjectFromFile(std::string path, int ove
 	return obj;
 }
 
-void Level::DestroyObject(std::shared_ptr<GameObject> obj)
+void Level::DestroyObject(std::weak_ptr<GameObject> obj)
 {
-	destroyedObjects.push_back(obj);
+	destroyedObjects.push_back(obj.lock());
 }
 
 void Level::Update(float deltaTime)
@@ -117,5 +117,4 @@ void Level::Update(float deltaTime)
 			obj->Update_TickComponents(deltaTime);
 		}
 	}
-
 }

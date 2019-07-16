@@ -14,8 +14,10 @@
 void GameObject::Init(std::string name, float x, float y)
 {
 	transform = AddComponent<TransformComponent>();
-	transform->x = x;
-	transform->y = y;
+
+	auto pTransform = transform.lock();
+	pTransform->x = x;
+	pTransform->y = y;
 
 	this->name = name;
 
@@ -30,6 +32,7 @@ void GameObject::Init(float x, float y)
 void GameObject::InitFromFile(std::string path)
 {
 	transform = AddComponent<TransformComponent>();
+	auto pTransform = transform.lock();
 
 	std::ifstream file(path);
 	if (file.is_open())
@@ -40,14 +43,15 @@ void GameObject::InitFromFile(std::string path)
 
 		// load root gameobject
 		this->name = jsonData.contains("name") ? jsonData["name"].get<std::string>() : "GameObject";
-		if (jsonData.contains("x")) this->transform->x = jsonData["x"].get<float>();
-		if (jsonData.contains("y")) this->transform->y = jsonData["y"].get<float>();
+		if (jsonData.contains("x")) pTransform->x = jsonData["x"].get<float>();
+		if (jsonData.contains("y")) pTransform->y = jsonData["y"].get<float>();
 
 		// load components
 		for (auto& compData : jsonData["components"])
 		{
 			std::string className = compData["_class"].get<std::string>();
-			std::shared_ptr<GameComponent> comp = AddComponent(className);
+			std::weak_ptr<GameComponent> comp = AddComponent(className);
+			auto pComp = comp.lock();
 
 			// init variables
 			auto it = compData.begin();
@@ -61,12 +65,12 @@ void GameObject::InitFromFile(std::string path)
 
 				if (it->is_string())
 				{
-					comp->_SetString(it.key(), it->get<std::string>());
+					pComp->_SetString(it.key(), it->get<std::string>());
 				}
 
 				if (it->is_number_integer())
 				{
-					comp->_SetInt(it.key(), it->get<int>());
+					pComp->_SetInt(it.key(), it->get<int>());
 				}
 
 				it++;
@@ -86,13 +90,14 @@ void GameObject::InitFromFile(std::string path)
 void GameObject::InitFromFile(std::string path, float overrideX, float overrideY)
 {
 	InitFromFile(path);
-
-	transform->x = overrideX;
-	transform->y = overrideY;
+	
+	auto pTransform = transform.lock();
+	pTransform->x = overrideX;
+	pTransform->y = overrideY;
 
 }
 
-std::shared_ptr<GameComponent> GameObject::AddComponent(std::string className)
+std::weak_ptr<GameComponent> GameObject::AddComponent(std::string className)
 {
 	std::shared_ptr<GameComponent> comp = GameComponentLoader::CreateNew(className);
 	comp->Init(shared_from_this());
@@ -100,9 +105,9 @@ std::shared_ptr<GameComponent> GameObject::AddComponent(std::string className)
 	return comp;
 }
 
-void GameObject::DestroyComponent(std::shared_ptr<GameComponent> component)
+void GameObject::DestroyComponent(std::weak_ptr<GameComponent> component)
 {
-	destroyedComponents.push_back(component);
+	destroyedComponents.push_back(component.lock());
 }
 
 void GameObject::Update_DestroyComponents()

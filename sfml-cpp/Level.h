@@ -7,9 +7,9 @@ class Level
 {
 public:
 	Level(std::string path);
-	std::shared_ptr<GameObject> SpawnObject(std::string name, int x, int y);
-	std::shared_ptr<GameObject> SpawnObjectFromFile(std::string path, int overrideX, int overrideY);
-	void DestroyObject(std::shared_ptr<GameObject> obj);
+	std::weak_ptr<GameObject> SpawnObject(std::string name, float x, float y);
+	std::weak_ptr<GameObject> SpawnObjectFromFile(std::string path, float overrideX, float overrideY);
+	void DestroyObject(std::weak_ptr<GameObject> obj);
 
 	void Update(float deltaTime);
 
