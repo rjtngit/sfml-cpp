@@ -3,11 +3,12 @@
 #include "SFML/Graphics.hpp"
 #include "SFML/System.hpp"
 #include "Level.h"
+#include "GameConfig.h"
 
 class GameInstance
 {
 public:
-	GameInstance();
+	GameInstance(GameConfig config);
 	void Update();
 	void Render();
 	bool IsRunning() const;

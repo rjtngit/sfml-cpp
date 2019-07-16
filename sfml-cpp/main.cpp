@@ -1,8 +1,10 @@
 #include "GameInstance.h"
+#include "GameConfig.h"
 
 int main()
 {
-	GameInstance gameInstance;
+	GameConfig config("Content/Game.ini");
+	GameInstance gameInstance(config);
 
 	while (gameInstance.IsRunning())
 	{

@@ -2,10 +2,10 @@
 #include "Level.h"
 #include "Paths.h"
 
-GameInstance::GameInstance() 
+GameInstance::GameInstance(GameConfig config)
 	: 
-	window(sf::VideoMode(640, 360), ""),
-	activeLevel(std::make_unique<Level>(Paths::GetLevelPath("Start.lvl")))
+	window(sf::VideoMode(config.GetWindowWidth(), config.GetWindowHeight()), config.GetGameTitle()),
+	activeLevel(std::make_unique<Level>(Paths::GetLevelPath(config.GetStartLevelFileName())))
 {
 	deltaClock.restart();
 }
