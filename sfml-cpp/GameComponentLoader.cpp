@@ -1,4 +1,5 @@
 #include "GameComponentLoader.h"
+#include "GameComponent.h"
 
 namespace GameComponentLoader
 {
