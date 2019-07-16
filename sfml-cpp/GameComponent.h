@@ -1,5 +1,6 @@
 #pragma once
 #include "GameComponentLoader.h"
+#include <memory>
 
 class GameObject;
 
@@ -8,7 +9,7 @@ class GameComponent
 	LOADABLE_CLASS_BASE()
 
 public:
-	void Init(std::shared_ptr<GameObject> owner);
+	void Init(std::weak_ptr<GameObject> owner);
 
 	// Called when component starts ticking
 	virtual void Start() {};
@@ -16,9 +17,9 @@ public:
 	// Called every frame
 	virtual void Tick(float deltaTime) {};
 
-	std::shared_ptr<GameObject> GetGameObject() { return gameObject; }
+	std::weak_ptr<GameObject> GetGameObject() { return gameObject; }
 
 	// VARIABLES
 private:
-	std::shared_ptr<GameObject> gameObject = nullptr;
+	std::weak_ptr<GameObject> gameObject;
 };

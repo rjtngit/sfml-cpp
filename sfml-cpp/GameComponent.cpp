@@ -1,6 +1,6 @@
 #include "GameComponent.h"
 
-void GameComponent::Init(std::shared_ptr<GameObject> owner)
+void GameComponent::Init(std::weak_ptr<GameObject> owner)
 {
 	this->gameObject = owner;
 }
