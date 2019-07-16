@@ -5,6 +5,7 @@
 #include "Paths.h"
 #include "GameObject.h"
 #include <algorithm>
+#include <memory>
 
 Level::Level(std::string path)
 {
@@ -32,7 +33,7 @@ Level::Level(std::string path)
 			{
 				// create object
 				std::string objPath = Paths::FindObjectPath(objData, mapRow[i]);
-				GameObject* obj = SpawnObjectFromFile(objPath, x, y);
+				std::shared_ptr<GameObject> obj = SpawnObjectFromFile(objPath, x, y);
 
 				++x;
 			}
@@ -47,58 +48,74 @@ Level::Level(std::string path)
 	}
 }
 
-GameObject* Level::SpawnObject(std::string name, int x, int y)
+std::shared_ptr<GameObject> Level::SpawnObject(std::string name, int x, int y)
 {
-	newObjects.push_back(std::make_unique<GameObject>());
-	GameObject* obj = newObjects[newObjects.size() - 1].get();
+	std::shared_ptr<GameObject> obj = std::make_shared<GameObject>();
+	newObjects.push_back(obj);
 
 	obj->Init(name, x, y);
 
 	return obj;
 }
 
-GameObject* Level::SpawnObjectFromFile(std::string path, int overrideX, int overrideY)
+std::shared_ptr<GameObject> Level::SpawnObjectFromFile(std::string path, int overrideX, int overrideY)
 {
-	newObjects.push_back(std::make_unique<GameObject>());
-	GameObject* obj = newObjects[newObjects.size() - 1].get();
+	std::shared_ptr<GameObject> obj = std::make_shared<GameObject>();
+	newObjects.push_back(obj);
 
 	obj->InitFromFile(path, overrideX, overrideY);
 
 	return obj;
 }
 
+void Level::DestroyObject(std::shared_ptr<GameObject> obj)
+{
+	destroyedObjects.push_back(obj);
+}
+
 void Level::Update(float deltaTime)
 {
 	// Remove game objects pending deletion
-	for(auto& obj : deletedObjects)
+	for (auto& obj : destroyedObjects)
 	{
-		std::remove(objects.begin(), objects.end(), obj);
+		activeObjects.erase(std::remove(activeObjects.begin(), activeObjects.end(), obj), activeObjects.end());
+		newObjects.erase(std::remove(newObjects.begin(), newObjects.end(), obj), newObjects.end());
 	}
-	deletedObjects.clear();
+	destroyedObjects.clear();
 
 	// Move new game objects to active list
-	objects.reserve(objects.size() + newObjects.size());
-    std::move(std::begin(newObjects), std::end(newObjects), std::back_inserter(objects));
-    newObjects.clear();
+	if (newObjects.size() > 0)
+	{
+		activeObjects.reserve(activeObjects.size() + newObjects.size());
+		std::move(std::begin(newObjects), std::end(newObjects), std::back_inserter(activeObjects));
+		newObjects.clear();
+	}
 	
 	// Remove components pending deletion
-	for(auto& obj : objects)
+	for(auto& obj : activeObjects)
 	{
-		obj->DeleteComponents();
+		if (obj && obj->IsInitialized())
+		{
+			obj->Update_DestroyComponents();
+		}
 	}
 
 	// Start new components
-	for(auto& obj : objects)
+	for(auto& obj : activeObjects)
 	{
-		obj->StartComponents();
+		if (obj && obj->IsInitialized())
+		{
+			obj->Update_StartComponents();
+		}
 	}
 
 	// Update game objects
-	for(auto& obj : objects)
+	for(auto& obj : activeObjects)
 	{
-		if(obj->IsInitialized())
+		if(obj && obj->IsInitialized())
 		{
-			obj->Update(deltaTime);
+			obj->Update_TickComponents(deltaTime);
 		}
 	}
+
 }

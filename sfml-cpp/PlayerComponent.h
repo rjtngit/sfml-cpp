@@ -6,6 +6,7 @@ class PlayerComponent : public GameComponent
 	LOADABLE_CLASS(PlayerComponent)
 
 public:
-	void Update(float deltaTime) override {};
+	void Tick(float deltaTime) override;
+
 };
 

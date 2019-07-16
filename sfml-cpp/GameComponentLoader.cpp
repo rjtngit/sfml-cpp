@@ -2,7 +2,7 @@
 
 namespace GameComponentLoader
 {
-	GameComponent* GameComponentLoader::CreateNew(std::string className)
+	std::shared_ptr<GameComponent> GameComponentLoader::CreateNew(std::string className)
 	{
 		auto& map = get_map();
 		auto it = map.find(className);
@@ -12,7 +12,7 @@ namespace GameComponentLoader
 			return nullptr;
 		}
 
-		return it->second();
+		return std::shared_ptr<GameComponent>(it->second());
 	}
 
 	std::unordered_map<std::string, std::function<GameComponent*()>> & GameComponentLoader::get_map()

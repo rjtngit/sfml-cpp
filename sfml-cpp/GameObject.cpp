@@ -11,21 +11,18 @@
 #include <algorithm>
 
 
-GameObject::GameObject()
-{
-
-}
-
-void GameObject::Init(std::string name, int x, int y)
+void GameObject::Init(std::string name, float x, float y)
 {
 	transform = AddComponent<TransformComponent>();
 	transform->x = x;
 	transform->y = y;
 
+	this->name = name;
+
 	initialized = true;
 }
 
-void GameObject::Init(int x, int y)
+void GameObject::Init(float x, float y)
 {
 	Init("GameObject", x, y);
 }
@@ -43,14 +40,14 @@ void GameObject::InitFromFile(std::string path)
 
 		// load root gameobject
 		this->name = jsonData.contains("name") ? jsonData["name"].get<std::string>() : "GameObject";
-		if (jsonData.contains("x")) this->transform->x = jsonData["x"].get<int>();
-		if (jsonData.contains("y")) this->transform->y = jsonData["y"].get<int>();
+		if (jsonData.contains("x")) this->transform->x = jsonData["x"].get<float>();
+		if (jsonData.contains("y")) this->transform->y = jsonData["y"].get<float>();
 
 		// load components
 		for (auto& compData : jsonData["components"])
 		{
 			std::string className = compData["_class"].get<std::string>();
-			GameComponent* comp = AddComponent(className);
+			std::shared_ptr<GameComponent> comp = AddComponent(className);
 
 			// init variables
 			auto it = compData.begin();
@@ -86,7 +83,7 @@ void GameObject::InitFromFile(std::string path)
 
 }
 
-void GameObject::InitFromFile(std::string path, int overrideX, int overrideY)
+void GameObject::InitFromFile(std::string path, float overrideX, float overrideY)
 {
 	InitFromFile(path);
 
@@ -95,40 +92,48 @@ void GameObject::InitFromFile(std::string path, int overrideX, int overrideY)
 
 }
 
-GameComponent* GameObject::AddComponent(std::string className)
+std::shared_ptr<GameComponent> GameObject::AddComponent(std::string className)
 {
-	newComponents.push_back(std::unique_ptr<GameComponent>(GameComponentLoader::CreateNew(className)));
-	return newComponents[newComponents.size() - 1].get();
+	std::shared_ptr<GameComponent> comp = GameComponentLoader::CreateNew(className);
+	comp->Init(shared_from_this());
+	newComponents.push_back(comp);
+	return comp;
 }
 
-void GameObject::DeleteComponents()
+void GameObject::DestroyComponent(std::shared_ptr<GameComponent> component)
+{
+	destroyedComponents.push_back(component);
+}
+
+void GameObject::Update_DestroyComponents()
 {
 	// Remove components pending deletion
-	for(auto& comp : deletedComponents)
+	for(auto& comp : destroyedComponents)
 	{
-		std::remove(deletedComponents.begin(), deletedComponents.end(), comp);
+		activeComponents.erase(std::remove(activeComponents.begin(), activeComponents.end(), comp), activeComponents.end());
+		newComponents.erase(std::remove(newComponents.begin(), newComponents.end(), comp), newComponents.end());
 	}
-	deletedComponents.clear();
+	destroyedComponents.clear();
 }
 
-void GameObject::StartComponents()
+void GameObject::Update_StartComponents()
 {
 	// Start and move new components to active list
 	for(auto& comp : newComponents)
 	{
 		comp->Start();
 	}
-	components.reserve(components.size() + newComponents.size());
-    std::move(std::begin(newComponents), std::end(newComponents), std::back_inserter(components));
+	activeComponents.reserve(activeComponents.size() + newComponents.size());
+    std::move(std::begin(newComponents), std::end(newComponents), std::back_inserter(activeComponents));
     newComponents.clear();
 }
 
-void GameObject::Update(float deltaTime)
+void GameObject::Update_TickComponents(float deltaTime)
 {
 	// Update components
-	for(auto& comp : components)
+	for(auto& comp : activeComponents)
 	{
-		comp->Update(deltaTime);
+		comp->Tick(deltaTime);
 	}
 }
 

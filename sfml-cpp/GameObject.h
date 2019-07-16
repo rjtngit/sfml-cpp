@@ -6,69 +6,72 @@
 
 class TransformComponent;
 
-class GameObject
+class GameObject : public std::enable_shared_from_this<GameObject>
 {
 public: 
-	GameObject();
-	void Init(std::string name, int x, int y);
-	void Init(int x, int y);
+	void Init(std::string name, float x, float y);
+	void Init(float x, float y);
 	void InitFromFile(std::string path);
-	void InitFromFile(std::string path, int overrideX, int overrideY);
+	void InitFromFile(std::string path, float overrideX, float overrideY);
 
 	bool IsInitialized() const { return initialized; }
 
-	GameComponent* AddComponent(std::string className);
+	std::shared_ptr<GameComponent> AddComponent(std::string className);
 
 	template<typename T>
-	T* AddComponent();
+	std::shared_ptr<T> AddComponent();
 
 	template<typename T>
-	T* GetComponent();
+	std::shared_ptr<T> GetComponent();
 
-	void DeleteComponents();
-	void StartComponents();
-	void Update(float deltaTime);
+	std::shared_ptr<TransformComponent> GetTransform() { return transform;  }
+
+	void DestroyComponent(std::shared_ptr<GameComponent> component);
+
+	void Update_DestroyComponents();
+	void Update_StartComponents();
+	void Update_TickComponents(float deltaTime);
 
 	// VARIABLES
-public:
-	TransformComponent* transform = nullptr;
-
 private:
 	bool initialized = false;
 	std::string name;
-	std::vector<std::unique_ptr<GameComponent>> components;
-	std::vector<std::unique_ptr<GameComponent>> newComponents;
-	std::vector<std::unique_ptr<GameComponent>> deletedComponents;
 
+	std::shared_ptr<TransformComponent> transform = nullptr;
 
-	std::vector<std::unique_ptr<GameObject>> children;
+	std::vector<std::shared_ptr<GameComponent>> activeComponents;
+	std::vector<std::shared_ptr<GameComponent>> newComponents;
+	std::vector<std::shared_ptr<GameComponent>> destroyedComponents;
+
+	std::vector<std::shared_ptr<GameObject>> children;
 };
 
 
 // TEMPLATES
 template<typename T>
-T* GameObject::AddComponent()
+std::shared_ptr<T> GameObject::AddComponent()
 {
-	newComponents.push_back(std::make_unique<T>());
-	return dynamic_cast<T*>(newComponents[newComponents.size() - 1].get());
+	std::shared_ptr<T> comp = std::make_shared<T>();
+	comp->Init(shared_from_this());
+	newComponents.push_back(comp);
+	return comp;
 }
 
 template<typename T>
-T* GameObject::GetComponent()
+std::shared_ptr<T> GameObject::GetComponent()
 {
-	for (auto& comp : components) 
+	for (auto& comp : activeComponents) 
 	{
-		T* obj = dynamic_cast<T*>(comp.get());
+		std::shared_ptr<T> obj = std::dynamic_pointer_cast<T>(comp);
 		if (obj)
 		{
 			return obj;
 		}
-
 	}
 
-	for (auto& comp : newComponents) 
+	for (auto& comp : newComponents)
 	{
-		T* obj = dynamic_cast<T*>(comp.get());
+		std::shared_ptr<T> obj = std::dynamic_pointer_cast<T>(comp);
 		if (obj)
 		{
 			return obj;

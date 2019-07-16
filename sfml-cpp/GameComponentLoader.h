@@ -3,6 +3,7 @@
 #include <string>
 #include <unordered_map>
 #include <iostream>
+#include <memory>
 
 class GameComponent;
 
@@ -12,7 +13,7 @@ class GameComponent;
 
 namespace GameComponentLoader
 {
-	GameComponent* CreateNew(std::string className);
+	std::shared_ptr<GameComponent> CreateNew(std::string className);
 	std::unordered_map<std::string, std::function<GameComponent*()>> &get_map();
 
 	class ClassMapping 
