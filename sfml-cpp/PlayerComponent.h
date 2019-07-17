@@ -8,5 +8,8 @@ class PlayerComponent : public GameComponent
 public:
 	void Tick(float deltaTime) override;
 
+	// VARIABLES
+public:
+	float moveSpeed = 200.0f;
 };
 

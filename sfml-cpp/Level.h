@@ -13,9 +13,12 @@ public:
 
 	void Update(float deltaTime);
 
+	void GetRenderRules(std::vector<RenderRule>& rules) const;
+
 private:
 	std::vector<std::shared_ptr<GameObject>> activeObjects;
 	std::vector<std::shared_ptr<GameObject>> newObjects;
 	std::vector<std::shared_ptr<GameObject>> destroyedObjects;
 
+	
 };

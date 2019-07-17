@@ -16,8 +16,8 @@ void GameObject::Init(std::string name, float x, float y)
 	transform = AddComponent<TransformComponent>();
 
 	auto pTransform = transform.lock();
-	pTransform->x = x;
-	pTransform->y = y;
+	pTransform->Position.x = x;
+	pTransform->Position.y = y;
 
 	this->name = name;
 
@@ -43,8 +43,8 @@ void GameObject::InitFromFile(std::string path)
 
 		// load root gameobject
 		this->name = jsonData.contains("name") ? jsonData["name"].get<std::string>() : "GameObject";
-		if (jsonData.contains("x")) pTransform->x = jsonData["x"].get<float>();
-		if (jsonData.contains("y")) pTransform->y = jsonData["y"].get<float>();
+		if (jsonData.contains("x")) pTransform->Position.x = jsonData["x"].get<float>();
+		if (jsonData.contains("y")) pTransform->Position.y = jsonData["y"].get<float>();
 
 		// load components
 		for (auto& compData : jsonData["components"])
@@ -92,8 +92,8 @@ void GameObject::InitFromFile(std::string path, float overrideX, float overrideY
 	InitFromFile(path);
 	
 	auto pTransform = transform.lock();
-	pTransform->x = overrideX;
-	pTransform->y = overrideY;
+	pTransform->Position.x = overrideX;
+	pTransform->Position.y = overrideY;
 
 }
 
@@ -139,6 +139,14 @@ void GameObject::Update_TickComponents(float deltaTime)
 	for(auto& comp : activeComponents)
 	{
 		comp->Tick(deltaTime);
+	}
+}
+
+void GameObject::AppendRenderRules(std::vector<RenderRule>& rules) const
+{
+	for (const auto& comp : activeComponents)
+	{
+		rules.push_back(comp->Render());
 	}
 }
 

@@ -1,6 +1,7 @@
 #include "GameInstance.h"
 #include "Level.h"
 #include "Paths.h"
+#include "RenderRule.h"
 
 GameInstance::GameInstance(GameConfig config)
 	: 
@@ -26,7 +27,22 @@ void GameInstance::Update()
 void GameInstance::Render()
 {
 	window.clear();
-//	window.draw();
+
+	std::vector<RenderRule> rules;
+	activeLevel->GetRenderRules(rules);
+
+	for (const auto& r : rules)
+	{
+		if (r)
+		{
+			auto spriteData = r.GetData<SpriteRenderData>();
+			if (spriteData)
+			{
+				window.draw(spriteData->sprite);
+			}
+		}
+	}
+
 	window.display();
 }
 

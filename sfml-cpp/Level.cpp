@@ -6,6 +6,7 @@
 #include "GameObject.h"
 #include <algorithm>
 #include <memory>
+#include "RenderRule.h"
 
 Level::Level(std::string path)
 {
@@ -75,14 +76,6 @@ void Level::DestroyObject(std::weak_ptr<GameObject> obj)
 
 void Level::Update(float deltaTime)
 {
-	// Remove game objects pending deletion
-	for (auto& obj : destroyedObjects)
-	{
-		activeObjects.erase(std::remove(activeObjects.begin(), activeObjects.end(), obj), activeObjects.end());
-		newObjects.erase(std::remove(newObjects.begin(), newObjects.end(), obj), newObjects.end());
-	}
-	destroyedObjects.clear();
-
 	// Move new game objects to active list
 	if (newObjects.size() > 0)
 	{
@@ -91,15 +84,6 @@ void Level::Update(float deltaTime)
 		newObjects.clear();
 	}
 	
-	// Remove components pending deletion
-	for(auto& obj : activeObjects)
-	{
-		if (obj && obj->IsInitialized())
-		{
-			obj->Update_DestroyComponents();
-		}
-	}
-
 	// Start new components
 	for(auto& obj : activeObjects)
 	{
@@ -116,5 +100,29 @@ void Level::Update(float deltaTime)
 		{
 			obj->Update_TickComponents(deltaTime);
 		}
+	}
+
+	// Remove components pending deletion
+	for (auto& obj : activeObjects)
+	{
+		if (obj && obj->IsInitialized())
+		{
+			obj->Update_DestroyComponents();
+		}
+	}
+
+	// Remove game objects pending deletion
+	for (auto& obj : destroyedObjects)
+	{
+		activeObjects.erase(std::remove(activeObjects.begin(), activeObjects.end(), obj), activeObjects.end());
+	}
+	destroyedObjects.clear();
+}
+
+void Level::GetRenderRules(std::vector<RenderRule>& rules) const
+{
+	for (const auto& obj : activeObjects)
+	{
+		obj->AppendRenderRules(rules);
 	}
 }

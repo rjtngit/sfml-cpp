@@ -48,6 +48,12 @@
     <ClCompile Include="GameConfig.cpp">
       <Filter>Source\Engine</Filter>
     </ClCompile>
+    <ClCompile Include="Vector2.cpp">
+      <Filter>Source\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderRule.cpp">
+      <Filter>Source\Engine</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="json.hpp">
@@ -81,6 +87,12 @@
       <Filter>Source\Game</Filter>
     </ClInclude>
     <ClInclude Include="GameConfig.h">
+      <Filter>Source\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Vector2.h">
+      <Filter>Source\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderRule.h">
       <Filter>Source\Engine</Filter>
     </ClInclude>
   </ItemGroup>

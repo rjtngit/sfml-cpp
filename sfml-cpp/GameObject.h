@@ -32,6 +32,8 @@ public:
 	void Update_StartComponents();
 	void Update_TickComponents(float deltaTime);
 
+	void AppendRenderRules(std::vector<RenderRule>& rules) const;
+
 	// VARIABLES
 private:
 	bool initialized = false;
@@ -42,8 +44,6 @@ private:
 	std::vector<std::shared_ptr<GameComponent>> activeComponents;
 	std::vector<std::shared_ptr<GameComponent>> newComponents;
 	std::vector<std::shared_ptr<GameComponent>> destroyedComponents;
-
-	std::vector<std::shared_ptr<GameObject>> children;
 };
 
 

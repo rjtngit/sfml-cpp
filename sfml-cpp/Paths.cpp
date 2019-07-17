@@ -36,3 +36,9 @@ std::string Paths::FindObjectPath(const std::string objData, const char objIdent
 	std::cout << "Paths::FindObjectPath - Key not found: " << objIdentifier << std::endl;
 	return "";
 }
+
+std::string Paths::GetInContentPath(std::string subPath)
+{
+	return "Content/" + subPath;
+
+}

@@ -1,0 +1,9 @@
+{
+    "name" : "PlayerCharacter",
+    "components" : [
+    	{
+    		"_class" : "SpriteComponent",
+    		"spritePath" : "Sprites/wall.png"
+    	}
+    ]
+}
