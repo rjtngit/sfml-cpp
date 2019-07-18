@@ -8,15 +8,15 @@ class SpriteComponent : public GameComponent
 
 	void Start() override;
 	void Tick(float deltaTime) override;
-	const RenderRule Render() override;
+	RenderRule GetRenderRule() override;
+	void Render(GameRenderer& target) override;
 
 	// VARIABLES
 public:
 	LOADABLE_STRING(spritePath)
 	std::string spritePath;
 
-private:
-	RenderRule renderRule;
+
 };
 
 

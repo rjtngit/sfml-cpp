@@ -146,7 +146,7 @@ void GameObject::AppendRenderRules(std::vector<RenderRule>& rules) const
 {
 	for (const auto& comp : activeComponents)
 	{
-		rules.push_back(comp->Render());
+		rules.push_back(comp->GetRenderRule());
 	}
 }
 

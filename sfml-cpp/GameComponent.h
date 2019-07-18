@@ -2,6 +2,7 @@
 #include "GameComponentLoader.h"
 #include <memory>
 #include "RenderRule.h"
+#include "GameRenderer.h"
 
 class GameObject;
 
@@ -18,8 +19,12 @@ public:
 	// Called every frame
 	virtual void Tick(float deltaTime) {};
 
-	// Set up how this component should be rendered this frame. Called after Update.
-	virtual const RenderRule Render() { return RenderRule::NoRender; };
+	// How this component should be rendered this frame. Called before Render.
+	virtual RenderRule GetRenderRule() { return RenderRule::NoRender; };
+
+	// Render this object. Called after Update.
+	virtual void Render(GameRenderer& target) { };
+
 
 	std::weak_ptr<GameObject> GetGameObject() { return gameObject; }
 

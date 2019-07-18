@@ -8,10 +8,7 @@
 
 void SpriteComponent::Start()
 {
-	auto spriteData = renderRule.InitData<SpriteRenderData>();
 
-	spriteData->texture.loadFromFile(Paths::GetInContentPath(spritePath));
-	spriteData->sprite.setTexture(spriteData->texture);
 }
 
 void SpriteComponent::Tick(float deltaTime)
@@ -19,14 +16,17 @@ void SpriteComponent::Tick(float deltaTime)
 
 }
 
-const RenderRule SpriteComponent::Render() 
+RenderRule SpriteComponent::GetRenderRule() 
 {
-	auto pGo = GetGameObject().lock();
-	auto pTransform = pGo->GetTransform().lock();
-
-	auto spriteData = renderRule.GetData<SpriteRenderData>();
-	spriteData->sprite.setPosition(pTransform->Position.x, pTransform->Position.y);
+	RenderRule renderRule;
+	renderRule.render = true;
+	renderRule.gameComponent = this;
 
 	return renderRule;
+}
+
+void SpriteComponent::Render(GameRenderer& target) 
+{
+	target.DrawSprite(Paths::GetInContentPath(spritePath), GetGameObject().lock()->GetTransform().lock()->Position);
 }
 

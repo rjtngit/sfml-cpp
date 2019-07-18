@@ -54,6 +54,12 @@
     <ClCompile Include="RenderRule.cpp">
       <Filter>Source\Engine</Filter>
     </ClCompile>
+    <ClCompile Include="GameWindow.cpp">
+      <Filter>Source\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="GameRenderer.cpp">
+      <Filter>Source\Engine</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="json.hpp">
@@ -93,6 +99,12 @@
       <Filter>Source\Engine</Filter>
     </ClInclude>
     <ClInclude Include="RenderRule.h">
+      <Filter>Source\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="GameWindow.h">
+      <Filter>Source\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="GameRenderer.h">
       <Filter>Source\Engine</Filter>
     </ClInclude>
   </ItemGroup>

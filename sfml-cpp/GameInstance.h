@@ -1,9 +1,8 @@
 #pragma once
 
-#include "SFML/Graphics.hpp"
-#include "SFML/System.hpp"
 #include "Level.h"
 #include "GameConfig.h"
+#include "GameWindow.h"
 
 class GameInstance
 {
@@ -15,6 +14,6 @@ public:
 
 private:
 	std::unique_ptr<Level> activeLevel;
-	sf::RenderWindow window;
+	GameWindow window;
 	sf::Clock deltaClock;
 };
