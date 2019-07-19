@@ -9,6 +9,11 @@ Level::Level(std::string path)
 	:
 	levelData(path)
 {
+	
+}
+
+void Level::LoadData()
+{
 	const auto layout = levelData.GetLayout();
 	for (const LevelData::ObjectData& objData : layout)
 	{
@@ -21,7 +26,7 @@ std::weak_ptr<GameObject> Level::SpawnObject(std::string name, float x, float y)
 	std::shared_ptr<GameObject> obj = std::make_shared<GameObject>();
 	newObjects.push_back(obj);
 
-	obj->Init(name, x, y);
+	obj->Init(shared_from_this(), name, x, y);
 
 	return obj;
 }
@@ -31,7 +36,7 @@ std::weak_ptr<GameObject> Level::SpawnObjectFromFile(std::string path, float ove
 	std::shared_ptr<GameObject> obj = std::make_shared<GameObject>();
 	newObjects.push_back(obj);
 
-	obj->InitFromFile(path, overrideX, overrideY);
+	obj->InitFromFile(shared_from_this(), path, overrideX, overrideY);
 
 	return obj;
 }

@@ -9,10 +9,13 @@
 #include <memory>
 #include "GameComponent.h"
 #include <algorithm>
+#include "Level.h"
 
 
-void GameObject::Init(std::string name, float x, float y)
+void GameObject::Init(std::weak_ptr<Level> level, std::string name, float x, float y)
 {
+	this->level = level;
+
 	transform = AddComponent<TransformComponent>();
 
 	auto pTransform = transform.lock();
@@ -24,13 +27,15 @@ void GameObject::Init(std::string name, float x, float y)
 	initialized = true;
 }
 
-void GameObject::Init(float x, float y)
+void GameObject::Init(std::weak_ptr<Level> level, float x, float y)
 {
-	Init("GameObject", x, y);
+	Init(level, "GameObject", x, y);
 }
 
-void GameObject::InitFromFile(std::string path)
+void GameObject::InitFromFile(std::weak_ptr<Level> level, std::string path)
 {
+	this->level = level;
+
 	transform = AddComponent<TransformComponent>();
 	auto pTransform = transform.lock();
 
@@ -87,9 +92,9 @@ void GameObject::InitFromFile(std::string path)
 
 }
 
-void GameObject::InitFromFile(std::string path, float overrideX, float overrideY)
+void GameObject::InitFromFile(std::weak_ptr<Level> level, std::string path, float overrideX, float overrideY)
 {
-	InitFromFile(path);
+	InitFromFile(level, path);
 	
 	auto pTransform = transform.lock();
 	pTransform->Position.x = overrideX;

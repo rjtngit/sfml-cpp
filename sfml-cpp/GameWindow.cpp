@@ -20,6 +20,8 @@ void GameWindow::Update()
 
 void GameWindow::Render(const Level* level)
 {
+	renderer.SetCameraTarget(level->GetCameraTarget());
+
 	renderWindow->clear();
 
 	std::vector<RenderRule> rules;

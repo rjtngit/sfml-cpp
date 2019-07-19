@@ -7,8 +7,9 @@
 GameInstance::GameInstance(GameConfig config)
 	: 
 	window(config.GetWindowWidth(), config.GetWindowHeight(), config.GetGameTitle()),
-	activeLevel(std::make_unique<Level>(Paths::GetLevelPath(config.GetStartLevelFileName())))
+	activeLevel(std::make_shared<Level>(Paths::GetLevelPath(config.GetStartLevelFileName())))
 {
+	activeLevel->LoadData();
 	deltaClock.restart();
 }
 

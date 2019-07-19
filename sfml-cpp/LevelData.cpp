@@ -108,7 +108,7 @@ void LevelData::ReadObject(std::string line)
 	std::string key = line.substr(0, splitIndex);
 	std::string value = line.substr(splitIndex + 1);
 
-	if (key.empty())
+	if (key.empty() || key[0] == ' ')
 	{
 		return;
 	}
@@ -124,6 +124,12 @@ void LevelData::ReadMapRow(std::string line, int rowIndex)
 	for (size_t i = 0; i < line.size(); ++i, ++x)
 	{
 		char objectId = line[i];
+
+		if (objectId == ' ')
+		{
+			continue;
+		}
+
 		auto it = objectFiles.find(objectId);
 		if (it == objectFiles.end())
 		{

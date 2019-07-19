@@ -4,15 +4,16 @@
 #include <utility>
 #include "GameComponent.h"
 
+class Level;
 class TransformComponent;
 
 class GameObject : public std::enable_shared_from_this<GameObject>
 {
 public: 
-	void Init(std::string name, float x, float y);
-	void Init(float x, float y);
-	void InitFromFile(std::string path);
-	void InitFromFile(std::string path, float overrideX, float overrideY);
+	void Init(std::weak_ptr<Level> level, std::string name, float x, float y);
+	void Init(std::weak_ptr<Level> level, float x, float y);
+	void InitFromFile(std::weak_ptr<Level> level, std::string path);
+	void InitFromFile(std::weak_ptr<Level> level, std::string path, float overrideX, float overrideY);
 
 	bool IsInitialized() const { return initialized; }
 
@@ -24,6 +25,7 @@ public:
 	template<typename T>
 	std::weak_ptr<T> GetComponent();
 
+	std::weak_ptr<Level> GetLevel() { return level; }
 	std::weak_ptr<TransformComponent> GetTransform() { return transform;  }
 
 	void DestroyComponent(std::weak_ptr<GameComponent> component);
@@ -39,6 +41,7 @@ private:
 	bool initialized = false;
 	std::string name;
 
+	std::weak_ptr<Level> level;
 	std::weak_ptr<TransformComponent> transform;
 
 	std::vector<std::shared_ptr<GameComponent>> activeComponents;

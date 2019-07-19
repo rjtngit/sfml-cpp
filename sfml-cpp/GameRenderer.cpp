@@ -14,7 +14,10 @@ void GameRenderer::DrawSprite(std::string texturePath, Vector2 position, RenderP
 
 	sf::Sprite sprite;
 	sprite.setTexture(texture);
-	sprite.setPosition(position.x, position.y);
+	Vector2 screenPos;
+	screenPos.x = position.x - cameraTarget.x + renderWindow->getSize().x / 2.0;
+	screenPos.y = position.y - cameraTarget.y + renderWindow->getSize().y / 2.0;
+	sprite.setPosition(screenPos.x, screenPos.y);
 
 	renderWindow->draw(sprite);
 }

@@ -13,7 +13,7 @@ public:
 	bool IsRunning() const;
 
 private:
-	std::unique_ptr<Level> activeLevel;
+	std::shared_ptr<Level> activeLevel;
 	GameWindow window;
 	sf::Clock deltaClock;
 };

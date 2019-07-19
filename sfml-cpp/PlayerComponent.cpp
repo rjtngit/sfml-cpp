@@ -2,27 +2,35 @@
 #include "GameObject.h"
 #include "TransformComponent.h"
 #include "SFML/Window/Keyboard.hpp"
+#include <memory>
+#include "Level.h"
 
 
 void PlayerComponent::Tick(float deltaTime)
 {
+	auto go = GetGameObject().lock();
+	auto transform = go->GetTransform().lock();
+	auto level = go->GetLevel().lock();
+
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
 	{
-		GetGameObject().lock()->GetTransform().lock()->Position.y -= deltaTime * moveSpeed;
+		transform->Position.y -= deltaTime * moveSpeed;
 	}
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
 	{
-		GetGameObject().lock()->GetTransform().lock()->Position.y += deltaTime * moveSpeed;
+		transform->Position.y += deltaTime * moveSpeed;
 	}
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
 	{
-		GetGameObject().lock()->GetTransform().lock()->Position.x -= deltaTime * moveSpeed;
+		transform->Position.x -= deltaTime * moveSpeed;
 	}
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
 	{
-		GetGameObject().lock()->GetTransform().lock()->Position.x += deltaTime * moveSpeed;
+		transform->Position.x += deltaTime * moveSpeed;
 	}
+
+	level->SetCameraTarget(transform->Position);
 }

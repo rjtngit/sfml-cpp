@@ -13,8 +13,13 @@ class GameRenderer
 {
 public: 
 	GameRenderer(std::shared_ptr<sf::RenderWindow> renderWindow);
+
 	void DrawSprite(std::string texturePath, Vector2 position, RenderPosition renderPos = RenderPosition::WORLD);
 
+	void SetCameraTarget(Vector2 target) { this->cameraTarget = target; }
+
+	// VARIABLES
 private:
 	std::shared_ptr<sf::RenderWindow> renderWindow;
+	Vector2 cameraTarget;
 };
