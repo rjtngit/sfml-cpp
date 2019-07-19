@@ -4,3 +4,4 @@
 #define LOADABLE_VAR(VarName, MapPostfix, ParamType) 
 #define LOADABLE_STRING(VarName)
 #define LOADABLE_INT(VarName)
+#define LOADABLE_FLOAT(VarName)

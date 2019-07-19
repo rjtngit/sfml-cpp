@@ -61,6 +61,8 @@ public: \
 }; \
 LOADABLE_CLASS_VARMAP(ClassType, String, std::string) \
 LOADABLE_CLASS_VARMAP(ClassType, Int, int) \
+LOADABLE_CLASS_VARMAP(ClassType, Float, float) \
+
 
 // ------------------------------------------------------------- //
 
@@ -101,6 +103,8 @@ private: \
 #define LOADABLE_CLASS_BASE() \
 LOADABLE_CLASS_VARMAP_VIRTUAL(String, std::string) \
 LOADABLE_CLASS_VARMAP_VIRTUAL(Int, int) \
+LOADABLE_CLASS_VARMAP_VIRTUAL(Float, float) \
+
 
 // ------------------------------------------------------------- //
 
@@ -137,5 +141,11 @@ public: \
 // LOADABLE_INT
 // Shortcut for integers
 #define LOADABLE_INT(VarName) LOADABLE_VAR(VarName, Int, int) 
+
+// ------------------------------------------------------------- //
+
+// LOADABLE_FLOAT
+// Shortcut for floats
+#define LOADABLE_FLOAT(VarName) LOADABLE_VAR(VarName, Float, float) 
 
 // ------------------------------------------------------------- //

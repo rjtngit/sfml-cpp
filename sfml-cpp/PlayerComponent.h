@@ -10,6 +10,7 @@ public:
 
 	// VARIABLES
 public:
+	LOADABLE_FLOAT(moveSpeed)
 	float moveSpeed = 200.0f;
 };
 
