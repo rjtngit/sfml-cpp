@@ -47,4 +47,8 @@ GameConfig::GameConfig(std::string iniPath)
 			}
 		}
 	}
+	else
+	{
+		std::cout << "GameConfig::GameConfig - Unable to open file " << iniPath << std::endl;
+	}
 }

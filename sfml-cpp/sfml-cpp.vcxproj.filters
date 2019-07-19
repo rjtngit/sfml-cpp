@@ -60,6 +60,9 @@
     <ClCompile Include="GameRenderer.cpp">
       <Filter>Source\Engine</Filter>
     </ClCompile>
+    <ClCompile Include="LevelData.cpp">
+      <Filter>Source\Engine</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="json.hpp">
@@ -105,6 +108,9 @@
       <Filter>Source\Engine</Filter>
     </ClInclude>
     <ClInclude Include="GameRenderer.h">
+      <Filter>Source\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="LevelData.h">
       <Filter>Source\Engine</Filter>
     </ClInclude>
   </ItemGroup>

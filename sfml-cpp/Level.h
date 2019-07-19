@@ -2,6 +2,7 @@
 
 #include <string>
 #include "GameObject.h"
+#include "LevelData.h"
 
 class Level 
 {
@@ -16,6 +17,7 @@ public:
 	void GetRenderRules(std::vector<RenderRule>& rules) const;
 
 private:
+	LevelData levelData;
 	std::vector<std::shared_ptr<GameObject>> activeObjects;
 	std::vector<std::shared_ptr<GameObject>> newObjects;
 	std::vector<std::shared_ptr<GameObject>> destroyedObjects;
