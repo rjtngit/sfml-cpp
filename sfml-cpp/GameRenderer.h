@@ -18,8 +18,12 @@ public:
 
 	void SetCameraTarget(Vector2 target) { this->cameraTarget = target; }
 
+private:
+	const sf::Texture& GetTexture(std::string path);
+
 	// VARIABLES
 private:
 	std::shared_ptr<sf::RenderWindow> renderWindow;
+	std::map<std::string, sf::Texture> textureCache;
 	Vector2 cameraTarget;
 };

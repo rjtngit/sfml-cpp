@@ -16,6 +16,8 @@ public:
 	LOADABLE_STRING(spritePath)
 	std::string spritePath;
 
+	LOADABLE_INT(renderOrder)
+	int renderOrder;
 
 };
 

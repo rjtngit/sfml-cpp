@@ -21,6 +21,7 @@ RenderRule SpriteComponent::GetRenderRule()
 	RenderRule renderRule;
 	renderRule.render = true;
 	renderRule.gameComponent = this;
+	renderRule.order = renderOrder;
 
 	return renderRule;
 }

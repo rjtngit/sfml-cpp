@@ -6,7 +6,8 @@
     	},
     	{
     		"_class" : "SpriteComponent",
-    		"spritePath" : "Sprites/player.png"
+    		"spritePath" : "Sprites/player.png",
+    		"renderOrder" : 100
     	}
     ]
 }

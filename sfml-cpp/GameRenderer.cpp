@@ -9,8 +9,7 @@ GameRenderer::GameRenderer(std::shared_ptr<sf::RenderWindow> renderWindow)
 
 void GameRenderer::DrawSprite(std::string texturePath, Vector2 position, RenderPosition renderPos /*= RenderPosition::WORLD*/)
 {
-	sf::Texture texture;
-	texture.loadFromFile(texturePath);
+	const sf::Texture& texture = GetTexture(texturePath);
 
 	sf::Sprite sprite;
 	sprite.setTexture(texture);
@@ -20,4 +19,15 @@ void GameRenderer::DrawSprite(std::string texturePath, Vector2 position, RenderP
 	sprite.setPosition(screenPos.x, screenPos.y);
 
 	renderWindow->draw(sprite);
+}
+
+const sf::Texture& GameRenderer::GetTexture(std::string path)
+{
+	auto it = textureCache.find(path);
+	if (it == textureCache.end())
+	{
+		textureCache[path].loadFromFile(path);
+	}
+
+	return textureCache[path];
 }
