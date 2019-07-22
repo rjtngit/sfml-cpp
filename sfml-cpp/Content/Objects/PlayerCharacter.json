@@ -8,6 +8,11 @@
     		"_class" : "SpriteComponent",
     		"spritePath" : "Sprites/player.png",
     		"renderOrder" : 100
-    	}
+    	},
+                {
+            "_class" : "BoxColliderComponent",
+            "width" : 52.0,
+            "height" : 104.0
+        }
     ]
 }

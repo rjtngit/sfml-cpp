@@ -6,7 +6,7 @@
 
 class GameObject;
 
-class GameComponent
+class GameComponent : public std::enable_shared_from_this<GameComponent>
 {
 	LOADABLE_CLASS_BASE()
 

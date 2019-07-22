@@ -63,24 +63,27 @@ std::weak_ptr<T> GameObject::AddComponent()
 template<typename T>
 std::weak_ptr<T> GameObject::GetComponent()
 {
+	std::shared_ptr<T> result;
+
 	for (auto& comp : activeComponents) 
 	{
-		std::shared_ptr<T> obj = std::dynamic_pointer_cast<T>(comp);
-		if (obj)
+		result = std::dynamic_pointer_cast<T>(comp);
+		if (result)
 		{
-			return obj;
+			return result;
 		}
 	}
 
 	for (auto& comp : newComponents)
 	{
-		std::shared_ptr<T> obj = std::dynamic_pointer_cast<T>(comp);
-		if (obj)
+		result = std::dynamic_pointer_cast<T>(comp);
+		if (result)
 		{
-			return obj;
+			return result;
 		}
 	}
 
-	return nullptr;
+	result = nullptr;
+	return result;
 }
 

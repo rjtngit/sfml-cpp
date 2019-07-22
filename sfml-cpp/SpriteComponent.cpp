@@ -28,6 +28,6 @@ RenderRule SpriteComponent::GetRenderRule()
 
 void SpriteComponent::Render(GameRenderer& target) 
 {
-	target.DrawSprite(Paths::GetInContentPath(spritePath), GetGameObject().lock()->GetTransform().lock()->Position);
+	target.DrawSprite(Paths::GetInContentPath(spritePath), GetGameObject().lock()->GetTransform().lock()->Position + Vector2(offsetX, offsetY));
 }
 

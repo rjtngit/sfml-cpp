@@ -46,6 +46,18 @@ void Level::DestroyObject(std::weak_ptr<GameObject> obj)
 	destroyedObjects.push_back(obj.lock());
 }
 
+std::vector<std::weak_ptr<GameObject>> Level::GetObjects()
+{
+	std::vector<std::weak_ptr<GameObject>> result;
+
+	for (auto& obj : activeObjects)
+	{
+		result.push_back(obj);
+	}
+
+	return result;
+}
+
 void Level::Update(float deltaTime)
 {
 	// Move new game objects to active list

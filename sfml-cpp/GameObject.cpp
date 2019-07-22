@@ -78,6 +78,11 @@ void GameObject::InitFromFile(std::weak_ptr<Level> level, std::string path)
 					pComp->_SetInt(it.key(), it->get<int>());
 				}
 
+				if (it->is_number_float())
+				{
+					pComp->_SetFloat(it.key(), it->get<float>());
+				}
+
 				it++;
 			}
 		}

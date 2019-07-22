@@ -5,6 +5,7 @@
 #include <memory>
 #include "Level.h"
 #include "InputComponent.h"
+#include "BoxColliderComponent.h"
 
 void PlayerComponent::Start()
 {
@@ -18,17 +19,74 @@ void PlayerComponent::Tick(float deltaTime)
 	auto transform = go->GetTransform().lock();
 	auto level = go->GetLevel().lock();
 	auto input = pInput.lock();
+	auto collider = go->GetComponent<BoxColliderComponent>().lock();
 
-	if (input->move_left.GetState())
+	Vector2 lastPosition = transform->Position;
+
+	// Jumping
+	if (input->move_up.GetState())
 	{
-		transform->Position.x -= deltaTime * moveSpeed;
+		if (!isJumping && isGrounded) {
+			isJumping = true;
+			isGrounded = false;
+			velocity.y = -jumpStrength;
+		}
 	}
 
+	// Movement
 	if (input->move_right.GetState())
 	{
-		transform->Position.x += deltaTime * moveSpeed;
+		if (velocity.x < moveSpeed)
+		{
+			velocity.x += acceleration * deltaTime;
+		}
+	}
+	else if (input->move_left.GetState())
+	{
+		if (velocity.x > -moveSpeed)
+		{
+			velocity.x -= acceleration * deltaTime;
+		}
+	}
+	else
+	{
+		if (velocity.x > 0)
+		{
+			velocity.x -= acceleration * deltaTime;
+			if (velocity.x < 0)
+			{
+				velocity.x = 0;
+			}
+		}
+		else if (velocity.x < 0)
+		{
+			velocity.x += acceleration * deltaTime;
+			if (velocity.x > 0)
+			{
+				velocity.x = 0;
+			}
+		}
 	}
 
+	// Gravity
+//	velocity.y += gravity;
+	isGrounded = false;
+
+	// Move player
+	transform->Position.x += velocity.x * deltaTime;
+	transform->Position.y += velocity.y * deltaTime;
+
+
+	// Collision
+	if (collider->IsCollidingAny())
+	{
+		transform->Position = lastPosition;
+		isGrounded = true;
+	//	isJumping = false;
+	}
+
+
+	// Update camera
 	level->SetCameraTarget(transform->Position);
 }
 

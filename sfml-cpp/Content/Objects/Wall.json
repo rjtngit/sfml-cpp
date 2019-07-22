@@ -4,6 +4,11 @@
     	{
     		"_class" : "SpriteComponent",
     		"spritePath" : "Sprites/wall.png"
+    	},
+    	{
+    		"_class" : "BoxColliderComponent",
+    		"width" : 52.0,
+    		"height" : 52.0
     	}
     ]
 }

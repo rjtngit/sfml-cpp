@@ -15,6 +15,7 @@ public:
 	std::weak_ptr<GameObject> SpawnObjectFromFile(std::string path, float overrideX, float overrideY);
 
 	void DestroyObject(std::weak_ptr<GameObject> obj);
+	std::vector<std::weak_ptr<GameObject>> GetObjects();
 
 	void Update(float deltaTime);
 	void GetRenderRules(std::vector<RenderRule>& rules) const;

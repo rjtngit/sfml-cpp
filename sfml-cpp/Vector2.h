@@ -10,6 +10,16 @@ public:
 		this->y = y;
 	}
 
+	Vector2 operator+ (const Vector2 & first) const
+	{
+		return Vector2(x + first.x, y + first.y);
+	}
+
+	Vector2 operator- (const Vector2 & first) const
+	{
+		return Vector2(x - first.x, y - first.y);
+	}
+
 // VARIABLES
 public:
 	float x = 0.0f;
