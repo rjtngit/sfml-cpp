@@ -142,6 +142,7 @@
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GameRenderer.cpp" />
     <ClCompile Include="GameWindow.cpp" />
+    <ClCompile Include="InputComponent.cpp" />
     <ClCompile Include="Level.cpp" />
     <ClCompile Include="LevelData.cpp" />
     <ClCompile Include="main.cpp" />
@@ -160,6 +161,7 @@
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="GameWindow.h" />
     <ClInclude Include="GameRenderer.h" />
+    <ClInclude Include="InputComponent.h" />
     <ClInclude Include="LevelData.h" />
     <ClInclude Include="PlayerComponent.h" />
     <ClInclude Include="json.hpp" />

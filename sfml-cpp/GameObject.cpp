@@ -129,13 +129,16 @@ void GameObject::Update_DestroyComponents()
 void GameObject::Update_StartComponents()
 {
 	// Start and move new components to active list
-	for(auto& comp : newComponents)
-	{
-		comp->Start();
-	}
-	activeComponents.reserve(activeComponents.size() + newComponents.size());
+	int numNew = newComponents.size();
+	activeComponents.reserve(activeComponents.size() + numNew);
     std::move(std::begin(newComponents), std::end(newComponents), std::back_inserter(activeComponents));
     newComponents.clear();
+
+	for (size_t i = activeComponents.size() - numNew; i < activeComponents.size(); i++)
+	{
+		auto comp = activeComponents[i];
+		comp->Start();
+	}
 }
 
 void GameObject::Update_TickComponents(float deltaTime)
