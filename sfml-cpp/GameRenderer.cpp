@@ -1,19 +1,21 @@
 #include "GameRenderer.h"
 #include "SFML/System/Vector2.hpp"
 
+
+GameRenderer::GameRenderer(std::shared_ptr<sf::RenderWindow> renderWindow, Vector2 nativeResolution)
+	:
+	renderWindow(renderWindow),
+	nativeResolution(nativeResolution)
+{
+
+}
+
 Vector2 GameRenderer::WorldToScreenPoint(Vector2 worldPosition)
 {
 	return Vector2(
-		worldPosition.x - cameraTarget.x + renderWindow->getSize().x / 2.0,
-		worldPosition.y - cameraTarget.y + renderWindow->getSize().y / 2.0
+		worldPosition.x - cameraTarget.x + nativeResolution.x / 2.0,
+		worldPosition.y - cameraTarget.y + nativeResolution.y / 2.0
 	);
-}
-
-GameRenderer::GameRenderer(std::shared_ptr<sf::RenderWindow> renderWindow)
-	:
-	renderWindow(renderWindow)
-{
-
 }
 
 void GameRenderer::DrawSprite(std::string texturePath, Vector2 position, RenderPosition renderPos /*= RenderPosition::WORLD*/)

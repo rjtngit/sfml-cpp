@@ -12,7 +12,7 @@ enum class RenderPosition
 class GameRenderer
 {
 public: 
-	GameRenderer(std::shared_ptr<sf::RenderWindow> renderWindow);
+	GameRenderer(std::shared_ptr<sf::RenderWindow> renderWindow, Vector2 nativeResolution);
 
 	Vector2 WorldToScreenPoint(Vector2 worldPosition);
 
@@ -26,6 +26,7 @@ private:
 
 	// VARIABLES
 private:
+	Vector2 nativeResolution;
 	std::shared_ptr<sf::RenderWindow> renderWindow;
 	std::map<std::string, sf::Texture> textureCache;
 	Vector2 cameraTarget;

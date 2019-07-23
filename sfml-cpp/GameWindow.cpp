@@ -4,7 +4,7 @@
 GameWindow::GameWindow(int width, int height, std::string title)
 	:
 	renderWindow(std::make_shared<sf::RenderWindow>(sf::VideoMode(width, height), title)),
-	renderer(renderWindow)
+	renderer(renderWindow, Vector2(width,height))
 {
 }
 
