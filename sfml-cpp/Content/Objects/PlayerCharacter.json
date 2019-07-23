@@ -6,13 +6,15 @@
     	},
     	{
     		"_class" : "SpriteComponent",
-    		"spritePath" : "",
+    		"spritePath" : "Sprites/player.png",
     		"renderOrder" : 100
     	},
                 {
             "_class" : "BoxColliderComponent",
-            "width" : 52.0,
-            "height" : 104.0
+            "width" : 45.0,
+            "height" : 100.0,
+            "offsetX": 20.0,
+            "offsetY": 11.0
         }
     ]
 }

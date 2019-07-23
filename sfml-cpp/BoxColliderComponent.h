@@ -28,10 +28,7 @@ public:
 	LOADABLE_FLOAT(offsetY)
 	float offsetY = 0.0f;
 
-	bool debugDraw = true;
-
-
-
+	bool debugDraw = false;
 
 private:
 	sf::FloatRect rect;
