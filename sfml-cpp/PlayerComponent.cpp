@@ -10,6 +10,9 @@
 void PlayerComponent::Start()
 {
 	auto go = GetGameObject().lock();
+	auto transform = go->GetTransform().lock();
+	auto collider = go->GetComponent<BoxColliderComponent>().lock();
+
 	pInput = go->AddComponent<InputComponent>();
 }
 
@@ -18,7 +21,17 @@ void PlayerComponent::Tick(float deltaTime)
 	auto go = GetGameObject().lock();
 	auto transform = go->GetTransform().lock();
 	auto level = go->GetLevel().lock();
+	auto collider = go->GetComponent<BoxColliderComponent>().lock();
 
+	// Hack to force player out of colliders (e.g. if spawned inside floor)
+	auto collisions = collider->GetOverlappingColliders();
+	while (collisions.size() > 0)
+	{
+		transform->Position.y -= 1;
+		collisions = collider->GetOverlappingColliders();
+	}
+
+	// Update character
 	TickMovement(deltaTime);
 	TickJumpFall(deltaTime);
 
@@ -104,18 +117,20 @@ void PlayerComponent::TickJumpFall(float deltaTime)
 			velocity.y = -jumpStrength;
 		}
 	}
+
+
+	// Gravity
+	isGrounded = false;
+	velocity.y += gravity * deltaTime;
 	
 	// Apply velocity
 	transform->Position.y += velocity.y * deltaTime;
-
-	// Gravity
-	velocity.y += gravity * deltaTime;
 
 	// Collision handling
 	auto collisions = collider->GetOverlappingColliders();
 	if (collisions.size() > 0)
 	{
-		if (transform->Position.y > snapshotPosition.y)
+		if (transform->Position.y >= snapshotPosition.y)
 		{
 			isGrounded = true;
 			isJumping = false;

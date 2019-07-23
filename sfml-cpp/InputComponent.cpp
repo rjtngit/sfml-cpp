@@ -84,12 +84,12 @@ void InputComponent::Tick(float deltaTime)
 
 			if (sf::Joystick::getAxisPosition(i, sf::Joystick::Axis::Y) > deadzone)
 			{
-				bMoveUp = true;
+				bMoveDown = true;
 			}
 
 			if (sf::Joystick::getAxisPosition(i, sf::Joystick::Axis::Y) < -deadzone)
 			{
-				bMoveDown = true;
+				bMoveUp = true;
 			}
 
 			if (sf::Joystick::isButtonPressed(i, 0))
