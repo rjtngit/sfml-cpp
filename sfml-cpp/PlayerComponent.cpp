@@ -18,34 +18,39 @@ void PlayerComponent::Tick(float deltaTime)
 	auto go = GetGameObject().lock();
 	auto transform = go->GetTransform().lock();
 	auto level = go->GetLevel().lock();
+
+	TickMovement(deltaTime);
+	TickJumpFall(deltaTime);
+
+	// Update camera
+	level->SetCameraTarget(transform->Position);
+}
+
+void PlayerComponent::TickMovement(float deltaTime)
+{
+	auto go = GetGameObject().lock();
+	auto transform = go->GetTransform().lock();
 	auto input = pInput.lock();
 	auto collider = go->GetComponent<BoxColliderComponent>().lock();
 
-	Vector2 lastPosition = transform->Position;
+	Vector2 snapshotPosition = transform->Position;
 
-	// Jumping
-	if (input->move_up.GetState())
-	{
-		if (!isJumping && isGrounded) {
-			isJumping = true;
-			isGrounded = false;
-			velocity.y = -jumpStrength;
-		}
-	}
-
-	// Movement
+	// Get movement input
 	if (input->move_right.GetState())
 	{
-		if (velocity.x < moveSpeed)
+		velocity.x += acceleration * deltaTime;
+		if (velocity.x > moveSpeed)
 		{
-			velocity.x += acceleration * deltaTime;
+			velocity.x = moveSpeed;
 		}
+
 	}
 	else if (input->move_left.GetState())
 	{
-		if (velocity.x > -moveSpeed)
+		velocity.x -= acceleration * deltaTime;
+		if (velocity.x < -moveSpeed)
 		{
-			velocity.x -= acceleration * deltaTime;
+			velocity.x = -moveSpeed;
 		}
 	}
 	else
@@ -68,26 +73,57 @@ void PlayerComponent::Tick(float deltaTime)
 		}
 	}
 
-	// Gravity
-//	velocity.y += gravity;
-	isGrounded = false;
-
-	// Move player
+	// Apply velocity
 	transform->Position.x += velocity.x * deltaTime;
-	transform->Position.y += velocity.y * deltaTime;
 
-
-	// Collision
-	if (collider->IsCollidingAny())
+	// Handle collision
+	auto collisions = collider->GetOverlappingColliders();
+	if (collisions.size() > 0)
 	{
-		transform->Position = lastPosition;
-		isGrounded = true;
-	//	isJumping = false;
+		transform->Position.x = snapshotPosition.x;
+		velocity.x = 0;
 	}
 
-
-	// Update camera
-	level->SetCameraTarget(transform->Position);
 }
 
+void PlayerComponent::TickJumpFall(float deltaTime)
+{
+	auto go = GetGameObject().lock();
+	auto transform = go->GetTransform().lock();
+	auto input = pInput.lock();
+	auto collider = go->GetComponent<BoxColliderComponent>().lock();
+
+	Vector2 snapshotPosition = transform->Position;
+
+	// Do jump
+	if (input->move_up.GetStateDown())
+	{
+		if (!isJumping && isGrounded)
+		{
+			isJumping = true;
+			velocity.y = -jumpStrength;
+		}
+	}
+	
+	// Apply velocity
+	transform->Position.y += velocity.y * deltaTime;
+
+	// Gravity
+	velocity.y += gravity * deltaTime;
+
+	// Collision handling
+	auto collisions = collider->GetOverlappingColliders();
+	if (collisions.size() > 0)
+	{
+		if (transform->Position.y > snapshotPosition.y)
+		{
+			isGrounded = true;
+			isJumping = false;
+		}
+
+		transform->Position.y = snapshotPosition.y;
+		velocity.y = 0;
+	}
+
+}
 

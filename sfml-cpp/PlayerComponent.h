@@ -21,6 +21,10 @@ public:
 	void Start() override;
 	void Tick(float deltaTime) override;
 
+private:
+	void TickMovement(float deltaTime);
+	void TickJumpFall(float deltaTime);
+
 	// VARIABLES
 public:
 	LOADABLE_FLOAT(moveSpeed)
@@ -30,10 +34,13 @@ public:
 	float acceleration = 5000.0f;
 
 	LOADABLE_FLOAT(jumpStrength)
-	float jumpStrength = 500.0f;
+	float jumpStrength = 1000.0f;
+
+	LOADABLE_FLOAT(jumpMax)
+	float jumpMax = 1000.0f;
 
 	LOADABLE_FLOAT(gravity)
-	float gravity = 100.0f;
+	float gravity = 2000.0f;
 
 private:
 	std::weak_ptr<InputComponent> pInput;

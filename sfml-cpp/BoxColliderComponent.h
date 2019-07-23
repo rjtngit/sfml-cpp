@@ -12,7 +12,7 @@ class BoxColliderComponent : public GameComponent
 	void Render(GameRenderer& target) override;
 
 public:
-	bool IsCollidingAny();
+	std::vector<std::weak_ptr<BoxColliderComponent>> GetOverlappingColliders();
 
 	// VARIABLES
 public:
