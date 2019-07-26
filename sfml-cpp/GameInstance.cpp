@@ -15,10 +15,17 @@ GameInstance::GameInstance(GameConfig config)
 
 void GameInstance::Update()
 {
-	window.Update();
+	float dt = deltaClock.restart().asSeconds();
 
-	sf::Time dt = deltaClock.restart();
-	activeLevel->Update(dt.asSeconds());
+	float fps = 1.0f / dt;
+	if (fps <= 10.0f)
+	{
+		// Hack for very low fps or game freeze (e.g. moving the window around). Stop update so physics doesn't break.
+		dt = 0;
+	}
+
+	activeLevel->Update(dt);
+	window.Update();
 }
 
 void GameInstance::Render()

@@ -42,25 +42,17 @@ void BoxColliderComponent::Render(GameRenderer& target)
 	target.DrawRect(Vector2(rect.left, rect.top), Vector2(rect.width, rect.height));
 }
 
-std::vector<std::weak_ptr<BoxColliderComponent>> BoxColliderComponent::GetOverlappingColliders()
+bool BoxColliderComponent::IsCollidingWithAnything()
 {
 	auto go = GetGameObject().lock();
 	auto transform = go->GetTransform().lock();
 	auto level = go->GetLevel().lock();
 
-	std::vector<std::weak_ptr<BoxColliderComponent>> result;
+	// Start test at last rect position (i.e. set at start of frame)
+	sf::IntRect testRect = rect;
+	testRect.left = transform->Position.x + offsetX;
+	testRect.top = transform->Position.y + offsetY;
 
-	// hack to make sure the rect is up to date
-	// TODO update rect whenever transform position is set?
-	{
-		rect.left = transform->Position.x + offsetX;
-		rect.top = transform->Position.y + offsetY;
-		rect.width = width;
-		rect.height = height;
-	}
-
-	// also hacky
-	// TODO optimize 
 	for (auto pObj : level->GetObjects())
 	{
 		auto obj = pObj.lock();
@@ -73,13 +65,14 @@ std::vector<std::weak_ptr<BoxColliderComponent>> BoxColliderComponent::GetOverla
 				continue;
 			}
 
-			if (col->rect.intersects(rect))
+			if (col->rect.intersects(testRect))
 			{
-				result.push_back(pCol);
+				return true;
 			}
 		}
 	}
 
-	return result;
+	return false;
+	
 }
 

@@ -6,13 +6,14 @@ class BoxColliderComponent : public GameComponent
 {
 	LOADABLE_CLASS(BoxColliderComponent)
 
+private:
 	void Start() override;
 	void Tick(float deltaTime) override;
 	RenderRule GetRenderRule() override;
 	void Render(GameRenderer& target) override;
 
 public:
-	std::vector<std::weak_ptr<BoxColliderComponent>> GetOverlappingColliders();
+	bool IsCollidingWithAnything();
 
 	// VARIABLES
 public:
@@ -31,5 +32,5 @@ public:
 	bool debugDraw = false;
 
 private:
-	sf::FloatRect rect;
+	sf::IntRect rect;
 };
