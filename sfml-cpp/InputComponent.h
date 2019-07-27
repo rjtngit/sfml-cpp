@@ -39,8 +39,6 @@ public:
 public:
 	const float deadzone = 20.0f;
 
-	InputState move_up;
-	InputState move_down;
 	InputState move_left;
 	InputState move_right;
 	InputState fire_up;
@@ -48,5 +46,7 @@ public:
 	InputState fire_left;
 	InputState fire_right;
 	InputState dash;
+	InputState jump;
+
 
 };

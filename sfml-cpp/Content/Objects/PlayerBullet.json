@@ -1,0 +1,13 @@
+{
+    "name" : "PlayerBullet",
+    "components" : [
+    	{
+    		"_class" : "PlayerBulletComponent",
+    		"speed" : 3000.0
+    	},
+    	{
+    		"_class" : "SpriteComponent",
+    		"spritePath" : "Sprites/playerbullet.png"
+    	}
+    ]
+}

@@ -6,6 +6,8 @@
 #include "Level.h"
 #include "InputComponent.h"
 #include "BoxColliderComponent.h"
+#include "Paths.h"
+#include "PlayerBulletComponent.h"
 
 void PlayerComponent::Start()
 {
@@ -26,6 +28,7 @@ void PlayerComponent::Tick(float deltaTime)
 	// Update character
 	TickMovement(deltaTime);
 	TickJumpFall(deltaTime);
+	TickFire(deltaTime);
 
 	// Update camera
 	level->SetCameraTarget(transform->Position);
@@ -100,7 +103,7 @@ void PlayerComponent::TickJumpFall(float deltaTime)
 	Vector2 snapshotPosition = transform->Position;
 
 	// Do jump
-	if (input->move_up.GetStateDown())
+	if (input->jump.GetStateDown())
 	{
 		if (!isJumping && isGrounded)
 		{
@@ -127,6 +130,46 @@ void PlayerComponent::TickJumpFall(float deltaTime)
 
 		transform->Position.y = snapshotPosition.y;
 		velocity.y = 0;
+	}
+}
+
+void PlayerComponent::TickFire(float deltaTime)
+{
+	auto go = GetGameObject().lock();
+	auto transform = go->GetTransform().lock();
+	auto input = pInput.lock();
+	auto collider = go->GetComponent<BoxColliderComponent>().lock();
+	auto level = go->GetLevel().lock();
+
+	Vector2 fireDirection;
+	bool isFiring = false;
+
+	if (input->fire_up.GetState())
+	{
+		fireDirection.y = -1;
+		isFiring = true;
+	}
+	if (input->fire_down.GetState())
+	{
+		fireDirection.y = 1;
+		isFiring = true;
+	}
+	if (input->fire_left.GetState())
+	{
+		fireDirection.x = -1;
+		isFiring = true;
+	}
+	if (input->fire_right.GetState())
+	{
+		fireDirection.x = 1;
+		isFiring = true;
+	}
+
+	if (isFiring)
+	{
+		auto bulletGo = level->SpawnObjectFromFile(Paths::GetObjectPath("PlayerBullet.json"), transform->Position).lock();
+		auto bullet = bulletGo->GetComponent<PlayerBulletComponent>().lock();
+		bullet->direction = fireDirection;
 	}
 }
 

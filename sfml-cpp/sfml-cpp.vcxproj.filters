@@ -69,6 +69,9 @@
     <ClCompile Include="BoxColliderComponent.cpp">
       <Filter>Source\Game</Filter>
     </ClCompile>
+    <ClCompile Include="PlayerBulletComponent.cpp">
+      <Filter>Source\Game</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="json.hpp">
@@ -123,6 +126,9 @@
       <Filter>Source\Game</Filter>
     </ClInclude>
     <ClInclude Include="BoxColliderComponent.h">
+      <Filter>Source\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerBulletComponent.h">
       <Filter>Source\Game</Filter>
     </ClInclude>
   </ItemGroup>

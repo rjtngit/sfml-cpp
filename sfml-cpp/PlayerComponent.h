@@ -24,6 +24,7 @@ public:
 private:
 	void TickMovement(float deltaTime);
 	void TickJumpFall(float deltaTime);
+	void TickFire(float deltaTime);
 
 	// VARIABLES
 public:

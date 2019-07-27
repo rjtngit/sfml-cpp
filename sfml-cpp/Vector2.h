@@ -10,14 +10,19 @@ public:
 		this->y = y;
 	}
 
-	Vector2 operator+ (const Vector2 & first) const
+	Vector2 operator+ (const Vector2 & other) const
 	{
-		return Vector2(x + first.x, y + first.y);
+		return Vector2(x + other.x, y + other.y);
 	}
 
-	Vector2 operator- (const Vector2 & first) const
+	Vector2 operator- (const Vector2 & other) const
 	{
-		return Vector2(x - first.x, y - first.y);
+		return Vector2(x - other.x, y - other.y);
+	}
+
+	Vector2 operator* (const float & v) const
+	{
+		return Vector2(x * v, y * v);
 	}
 
 // VARIABLES

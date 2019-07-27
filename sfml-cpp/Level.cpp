@@ -41,6 +41,11 @@ std::weak_ptr<GameObject> Level::SpawnObjectFromFile(std::string path, float ove
 	return obj;
 }
 
+std::weak_ptr<GameObject> Level::SpawnObjectFromFile(std::string path, Vector2 overridePosition)
+{
+	return SpawnObjectFromFile(path, overridePosition.x, overridePosition.y);
+}
+
 void Level::DestroyObject(std::weak_ptr<GameObject> obj)
 {
 	destroyedObjects.push_back(obj.lock());

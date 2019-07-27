@@ -148,6 +148,7 @@
     <ClCompile Include="LevelData.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Paths.cpp" />
+    <ClCompile Include="PlayerBulletComponent.cpp" />
     <ClCompile Include="PlayerComponent.cpp" />
     <ClCompile Include="RenderRule.cpp" />
     <ClCompile Include="SpriteComponent.cpp" />
@@ -165,6 +166,7 @@
     <ClInclude Include="GameRenderer.h" />
     <ClInclude Include="InputComponent.h" />
     <ClInclude Include="LevelData.h" />
+    <ClInclude Include="PlayerBulletComponent.h" />
     <ClInclude Include="PlayerComponent.h" />
     <ClInclude Include="json.hpp" />
     <ClInclude Include="Level.h" />

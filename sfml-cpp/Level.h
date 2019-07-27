@@ -13,6 +13,7 @@ public:
 
 	std::weak_ptr<GameObject> SpawnObject(std::string name, float x, float y);
 	std::weak_ptr<GameObject> SpawnObjectFromFile(std::string path, float overrideX, float overrideY);
+	std::weak_ptr<GameObject> SpawnObjectFromFile(std::string path, Vector2 overridePosition);
 
 	void DestroyObject(std::weak_ptr<GameObject> obj);
 	std::vector<std::weak_ptr<GameObject>> GetObjects();

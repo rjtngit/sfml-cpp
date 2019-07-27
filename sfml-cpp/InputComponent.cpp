@@ -10,8 +10,6 @@ void InputComponent::Tick(float deltaTime)
 	auto transform = go->GetTransform().lock();
 
 	// Poll input
-	bool bMoveUp = false;
-	bool bMoveDown = false;
 	bool bMoveLeft = false;
 	bool bMoveRight = false;
 	bool bFireUp = false;
@@ -19,16 +17,12 @@ void InputComponent::Tick(float deltaTime)
 	bool bFireLeft = false;
 	bool bFireRight = false;
 	bool bDash = false;
+	bool bJump = false;
 
 	// keyboard
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
 	{
-		bMoveUp = true;
-	}
-
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
-	{
-		bMoveDown = true;
+		bJump = true;
 	}
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
@@ -82,16 +76,6 @@ void InputComponent::Tick(float deltaTime)
 				bMoveLeft = true;
 			}
 
-			if (sf::Joystick::getAxisPosition(i, sf::Joystick::Axis::Y) > deadzone)
-			{
-				bMoveDown = true;
-			}
-
-			if (sf::Joystick::getAxisPosition(i, sf::Joystick::Axis::Y) < -deadzone)
-			{
-				bMoveUp = true;
-			}
-
 			if (sf::Joystick::isButtonPressed(i, 0))
 			{
 				bFireDown = true;
@@ -117,13 +101,16 @@ void InputComponent::Tick(float deltaTime)
 				bDash = true;
 			}
 
+			if (sf::Joystick::getAxisPosition(i, sf::Joystick::Axis::Z) > deadzone)
+			{
+				bJump = true;
+			}
+
 		}
 	}
 
 
 	// Update states
-	move_up.Update(bMoveUp);
-	move_down.Update(bMoveDown);
 	move_left.Update(bMoveLeft);
 	move_right.Update(bMoveRight);
 	fire_up.Update(bFireUp);
@@ -131,4 +118,5 @@ void InputComponent::Tick(float deltaTime)
 	fire_left.Update(bFireLeft);
 	fire_right.Update(bFireRight);
 	dash.Update(bDash);
+	jump.Update(bJump);
 }
