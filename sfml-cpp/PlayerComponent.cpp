@@ -8,6 +8,7 @@
 #include "BoxColliderComponent.h"
 #include "Paths.h"
 #include "PlayerBulletComponent.h"
+#include "WallComponent.h"
 
 void PlayerComponent::Start()
 {
@@ -85,7 +86,7 @@ void PlayerComponent::TickMovement(float deltaTime)
 	transform->Position.x += velocity.x * deltaTime;
 
 	// Handle collision
-	if (collider->IsCollidingWithAnything())
+	if (collider->IsOverlappingComponent<WallComponent>())
 	{
 		transform->Position.x = snapshotPosition.x;
 		velocity.x = 0;
@@ -120,7 +121,7 @@ void PlayerComponent::TickJumpFall(float deltaTime)
 
 	// Collision handling
 	isGrounded = false;
-	if (collider->IsCollidingWithAnything())
+	if (collider->IsOverlappingComponent<WallComponent>())
 	{
 		if (transform->Position.y >= snapshotPosition.y)
 		{

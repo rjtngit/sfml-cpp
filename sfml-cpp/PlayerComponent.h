@@ -3,16 +3,6 @@
 #include "InputComponent.h"
 #include <memory>
 
-enum class InputAction
-{
-	UP,
-	DOWN,
-	LEFT,
-	RIGHT,
-	FIRE,
-	DASH
-};
-
 class PlayerComponent : public GameComponent
 {
 	LOADABLE_CLASS(PlayerComponent)

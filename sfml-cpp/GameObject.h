@@ -63,7 +63,7 @@ std::weak_ptr<T> GameObject::AddComponent()
 template<typename T>
 std::weak_ptr<T> GameObject::GetComponent()
 {
-	std::shared_ptr<T> result;
+	std::shared_ptr<T> result = nullptr;
 
 	for (auto& comp : activeComponents) 
 	{
@@ -83,7 +83,6 @@ std::weak_ptr<T> GameObject::GetComponent()
 		}
 	}
 
-	result = nullptr;
 	return result;
 }
 

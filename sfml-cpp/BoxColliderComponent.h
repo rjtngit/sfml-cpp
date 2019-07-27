@@ -1,6 +1,7 @@
 #pragma once
 #include "GameComponent.h"
 #include "SFML/Graphics/Rect.hpp"
+#include "GameObject.h"
 
 class BoxColliderComponent : public GameComponent
 {
@@ -13,7 +14,14 @@ private:
 	void Render(GameRenderer& target) override;
 
 public:
-	bool IsCollidingWithAnything();
+	std::vector<std::weak_ptr<GameObject>> GetOverlappingObjects();
+	bool IsOverlappingAnything();
+
+	template<typename T>
+	std::weak_ptr<T> GetOverlappingComponent();
+
+	template<typename T>
+	bool IsOverlappingComponent();
 
 	// VARIABLES
 public:
@@ -29,8 +37,32 @@ public:
 	LOADABLE_FLOAT(offsetY)
 	float offsetY = 0.0f;
 
-	bool debugDraw = false;
+	bool debugDraw = true;
 
 private:
 	sf::IntRect rect;
 };
+
+template<typename T>
+std::weak_ptr<T>
+BoxColliderComponent::GetOverlappingComponent()
+{
+	for (auto pObj : GetOverlappingObjects())
+	{
+		auto obj = pObj.lock();
+		auto pCol = obj->GetComponent<T>();
+		if (!pCol.expired())
+		{
+			return pCol;
+		}
+	}
+
+	std::shared_ptr<T> result = nullptr;
+	return result;
+}
+
+template<typename T>
+bool BoxColliderComponent::IsOverlappingComponent()
+{
+	return !GetOverlappingComponent<T>().expired();
+}

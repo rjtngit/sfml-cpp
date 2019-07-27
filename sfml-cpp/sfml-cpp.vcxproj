@@ -136,6 +136,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="BoxColliderComponent.cpp" />
+    <ClCompile Include="EnemyComponent.cpp" />
+    <ClCompile Include="FloatingEnemyComponent.cpp" />
     <ClCompile Include="GameComponent.cpp" />
     <ClCompile Include="GameComponentLoader.cpp" />
     <ClCompile Include="GameConfig.cpp" />
@@ -154,9 +156,12 @@
     <ClCompile Include="SpriteComponent.cpp" />
     <ClCompile Include="TransformComponent.cpp" />
     <ClCompile Include="Vector2.cpp" />
+    <ClCompile Include="WallComponent.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BoxColliderComponent.h" />
+    <ClInclude Include="EnemyComponent.h" />
+    <ClInclude Include="FloatingEnemyComponent.h" />
     <ClInclude Include="GameComponent.h" />
     <ClInclude Include="GameComponentLoader.h" />
     <ClInclude Include="GameConfig.h" />
@@ -164,6 +169,7 @@
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="GameWindow.h" />
     <ClInclude Include="GameRenderer.h" />
+    <ClInclude Include="WallComponent.h" />
     <ClInclude Include="InputComponent.h" />
     <ClInclude Include="LevelData.h" />
     <ClInclude Include="PlayerBulletComponent.h" />

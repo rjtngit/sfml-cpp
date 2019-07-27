@@ -72,6 +72,15 @@
     <ClCompile Include="PlayerBulletComponent.cpp">
       <Filter>Source\Game</Filter>
     </ClCompile>
+    <ClCompile Include="EnemyComponent.cpp">
+      <Filter>Source\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="FloatingEnemyComponent.cpp">
+      <Filter>Source\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="WallComponent.cpp">
+      <Filter>Source\Game</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="json.hpp">
@@ -129,6 +138,15 @@
       <Filter>Source\Game</Filter>
     </ClInclude>
     <ClInclude Include="PlayerBulletComponent.h">
+      <Filter>Source\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyComponent.h">
+      <Filter>Source\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="FloatingEnemyComponent.h">
+      <Filter>Source\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="WallComponent.h">
       <Filter>Source\Game</Filter>
     </ClInclude>
   </ItemGroup>

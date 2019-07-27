@@ -8,6 +8,11 @@
     	{
     		"_class" : "SpriteComponent",
     		"spritePath" : "Sprites/playerbullet.png"
+    	},
+    	{
+    		"_class" : "BoxColliderComponent",
+    		"width" : 52.0,
+    		"height" : 52.0
     	}
     ]
 }
