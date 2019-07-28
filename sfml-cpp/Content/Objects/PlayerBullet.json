@@ -7,7 +7,7 @@
     	},
     	{
     		"_class" : "SpriteComponent",
-    		"spritePath" : "Sprites/playerbullet.png"
+    		"spritePath" : "Sprites/player_bullet.png"
     	},
     	{
     		"_class" : "BoxColliderComponent",

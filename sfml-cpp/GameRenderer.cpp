@@ -34,7 +34,7 @@ void GameRenderer::DrawSprite(std::string texturePath, Vector2 position, RenderP
 void GameRenderer::DrawRect(Vector2 position, Vector2 size, RenderPosition renderPos /*= RenderPosition::WORLD*/)
 {
 	sf::RectangleShape rectangle(sf::Vector2f(size.x, size.y));
-	rectangle.setOutlineColor(sf::Color::Red);
+	rectangle.setOutlineColor(sf::Color::White);
 	rectangle.setOutlineThickness(1);
 	rectangle.setFillColor(sf::Color::Transparent);
 

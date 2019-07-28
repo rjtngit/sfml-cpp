@@ -1,0 +1,19 @@
+{
+    "name" : "FloatingEnemy",
+    "components" : [
+        {
+            "_class" : "FloatingEnemyComponent"
+        },
+    	{
+    		"_class" : "SpriteComponent",
+    		"spritePath" : "Sprites/enemy_floating.png"
+    	},
+    	{
+    		"_class" : "BoxColliderComponent",
+    		"width" : 100.0,
+    		"height" : 30.0,
+    		"offsetX" : 10.0,
+    		"offsetY" : 10.0
+    	}
+    ]
+}

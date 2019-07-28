@@ -5,6 +5,7 @@
 #include "TransformComponent.h"
 #include "Level.h"
 #include "WallComponent.h"
+#include "EnemyComponent.h"
 
 void PlayerBulletComponent::Tick(float deltaTime)
 {
@@ -18,8 +19,29 @@ void PlayerBulletComponent::Tick(float deltaTime)
 	// Move bullet
 	transform->Position = transform->Position + (direction * deltaTime * speed);
 
-	// Destroy
-	if (elapsed > 5.0f || collider->IsOverlappingComponent<WallComponent>())
+	// Handle collisions
+	auto collisions = collider->GetOverlappingObjects();
+	for (auto pObj : collisions)
+	{
+		auto obj = pObj.lock();
+
+		auto pHitEnemy = obj->GetComponent<EnemyComponent>();
+		if (!pHitEnemy.expired())
+		{
+			// Kill things
+			auto hitEnemy = pHitEnemy.lock();
+			hitEnemy->Hit();
+			level->DestroyObject(go);
+		}
+		else if (!obj->GetComponent<WallComponent>().expired())
+		{
+			// Hit wall
+			level->DestroyObject(go);
+		}
+	}
+
+	// Expire
+	if (elapsed > 0.3f)
 	{
 		level->DestroyObject(go);
 	}

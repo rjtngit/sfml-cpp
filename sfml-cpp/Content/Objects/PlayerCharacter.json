@@ -6,7 +6,7 @@
     	},
     	{
     		"_class" : "SpriteComponent",
-    		"spritePath" : "Sprites/player.png",
+    		"spritePath" : "Sprites/player_idle.png",
     		"renderOrder" : 100
     	},
                 {

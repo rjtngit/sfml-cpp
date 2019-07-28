@@ -5,16 +5,17 @@ TileHeight=52
 
 OBJECTS:
 P=PlayerCharacter.json
+E=FloatingEnemy.json
 #=Wall.json
 
 LAYOUT:
 ##############################################
 #                                            #
+#                            E               #
+#          E                                 #
 #                                            #
-#                                            #
-#                                            #
-#                                            #
-#                                #           #
+#                                     E      #
+#                       E        #           #
 #     P                         ###          #
 #                 ##          ######         #
 #               ######      ##########       #
