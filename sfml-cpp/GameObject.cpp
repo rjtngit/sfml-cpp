@@ -83,6 +83,11 @@ void GameObject::InitFromFile(std::weak_ptr<Level> level, std::string path)
 					pComp->_SetFloat(it.key(), it->get<float>());
 				}
 
+				if (it->is_boolean())
+				{
+					pComp->_SetBool(it.key(), it->get<bool>());
+				}
+
 				it++;
 			}
 		}

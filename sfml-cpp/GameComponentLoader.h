@@ -62,6 +62,7 @@ public: \
 LOADABLE_CLASS_VARMAP(ClassType, String, std::string) \
 LOADABLE_CLASS_VARMAP(ClassType, Int, int) \
 LOADABLE_CLASS_VARMAP(ClassType, Float, float) \
+LOADABLE_CLASS_VARMAP(ClassType, Bool, bool) \
 
 
 // ------------------------------------------------------------- //
@@ -104,6 +105,7 @@ private: \
 LOADABLE_CLASS_VARMAP_VIRTUAL(String, std::string) \
 LOADABLE_CLASS_VARMAP_VIRTUAL(Int, int) \
 LOADABLE_CLASS_VARMAP_VIRTUAL(Float, float) \
+LOADABLE_CLASS_VARMAP_VIRTUAL(Bool, bool) \
 
 
 // ------------------------------------------------------------- //
@@ -148,4 +150,10 @@ public: \
 // Shortcut for floats
 #define LOADABLE_FLOAT(VarName) LOADABLE_VAR(VarName, Float, float) 
 
-// ------------------------------------------------------------- //
+// ------------------
+
+// LOADABLE_BOOL
+// Shortcut for bools
+#define LOADABLE_BOOL(VarName) LOADABLE_VAR(VarName, Bool, bool) 
+
+// ------------------------------------------------------------- //------------------------------------------- //
