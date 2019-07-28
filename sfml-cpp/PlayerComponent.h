@@ -3,6 +3,8 @@
 #include "InputComponent.h"
 #include <memory>
 
+class AudioComponent;
+
 class PlayerComponent : public GameComponent
 {
 	LOADABLE_CLASS(PlayerComponent)
@@ -35,9 +37,13 @@ public:
 
 private:
 	std::weak_ptr<InputComponent> pInput;
+	std::weak_ptr<AudioComponent> pAudio_Run;
+	std::weak_ptr<AudioComponent> pAudio_Jump;
+	std::weak_ptr<AudioComponent> pAudio_Fire;
 
 	Vector2 velocity;
 	bool isJumping = false;
 	bool isGrounded = false;
+	float fireCooldown = 0.0f;
 };
 
