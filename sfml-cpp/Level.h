@@ -4,6 +4,7 @@
 #include "GameObject.h"
 #include "LevelData.h"
 #include <memory>
+#include <unordered_set>
 
 class Level : public std::enable_shared_from_this<Level>
 { 
@@ -18,6 +19,13 @@ public:
 	void DestroyObject(std::weak_ptr<GameObject> obj);
 	std::vector<std::weak_ptr<GameObject>> GetObjects();
 
+	void RegisterForTick(std::weak_ptr<GameObject> obj);
+	void UnregisterForTick(std::weak_ptr<GameObject> obj);
+	void RegisterForRender(std::weak_ptr<GameObject> obj);
+	void UnregisterForRender(std::weak_ptr<GameObject> obj);
+	void RegisterForStart(std::weak_ptr<GameObject> obj);
+	void UnregisterForStart(std::weak_ptr<GameObject> obj);
+
 	void Update(float deltaTime);
 	void GetRenderRules(std::vector<RenderRule>& rules) const;
 
@@ -30,7 +38,10 @@ private:
 	LevelData levelData;
 	Vector2 cameraTarget;
 
-	std::vector<std::shared_ptr<GameObject>> activeObjects;
-	std::vector<std::shared_ptr<GameObject>> newObjects;
-	std::vector<std::shared_ptr<GameObject>> destroyedObjects;
+	std::unordered_set<std::shared_ptr<GameObject>> objects;
+	std::unordered_set<std::shared_ptr<GameObject>> objectsWithNewComponents;
+	std::unordered_set<std::shared_ptr<GameObject>> tickObjects;
+	std::unordered_set<std::shared_ptr<GameObject>> renderObjects;
+
+
 };

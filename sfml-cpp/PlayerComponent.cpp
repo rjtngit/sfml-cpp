@@ -32,6 +32,8 @@ void PlayerComponent::Start()
 	pAudio_Fire = go->AddComponent<AudioComponent>();
 	auto audio_fire = pAudio_Fire.lock();
 	audio_fire->LoadClip(Paths::GetInContentPath("Audio/pew.wav"));
+
+	EnableTick(true);
 }
 
 void PlayerComponent::Tick(float deltaTime)

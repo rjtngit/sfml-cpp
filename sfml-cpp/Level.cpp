@@ -24,9 +24,8 @@ void Level::LoadData()
 std::weak_ptr<GameObject> Level::SpawnObject(std::string name, float x, float y)
 {
 	std::shared_ptr<GameObject> obj = std::make_shared<GameObject>();
-	newObjects.push_back(obj);
-
 	obj->Init(shared_from_this(), name, x, y);
+	objects.insert(obj);
 
 	return obj;
 }
@@ -34,9 +33,8 @@ std::weak_ptr<GameObject> Level::SpawnObject(std::string name, float x, float y)
 std::weak_ptr<GameObject> Level::SpawnObjectFromFile(std::string path, float overrideX, float overrideY)
 {
 	std::shared_ptr<GameObject> obj = std::make_shared<GameObject>();
-	newObjects.push_back(obj);
-
 	obj->InitFromFile(shared_from_this(), path, overrideX, overrideY);
+	objects.insert(obj);
 
 	return obj;
 }
@@ -48,14 +46,18 @@ std::weak_ptr<GameObject> Level::SpawnObjectFromFile(std::string path, Vector2 o
 
 void Level::DestroyObject(std::weak_ptr<GameObject> obj)
 {
-	destroyedObjects.push_back(obj.lock());
+	UnregisterForTick(obj);
+	UnregisterForRender(obj);
+	UnregisterForStart(obj);
+
+	objects.erase(obj.lock());
 }
 
 std::vector<std::weak_ptr<GameObject>> Level::GetObjects()
 {
 	std::vector<std::weak_ptr<GameObject>> result;
 
-	for (auto& obj : activeObjects)
+	for (auto& obj : objects)
 	{
 		result.push_back(obj);
 	}
@@ -63,55 +65,71 @@ std::vector<std::weak_ptr<GameObject>> Level::GetObjects()
 	return result;
 }
 
+void Level::RegisterForTick(std::weak_ptr<GameObject> obj)
+{
+	tickObjects.insert(obj.lock());
+}
+
+void Level::UnregisterForTick(std::weak_ptr<GameObject> obj)
+{
+	tickObjects.erase(obj.lock());
+
+}
+
+void Level::RegisterForRender(std::weak_ptr<GameObject> obj)
+{
+	renderObjects.insert(obj.lock());
+}
+
+void Level::UnregisterForRender(std::weak_ptr<GameObject> obj)
+{
+	renderObjects.erase(obj.lock());
+}
+
+void Level::RegisterForStart(std::weak_ptr<GameObject> obj)
+{
+	objectsWithNewComponents.insert(obj.lock());
+
+}
+
+void Level::UnregisterForStart(std::weak_ptr<GameObject> obj)
+{
+	objectsWithNewComponents.erase(obj.lock());
+
+}
+
 void Level::Update(float deltaTime)
 {
-	// Move new game objects to active list
-	if (newObjects.size() > 0)
-	{
-		activeObjects.reserve(activeObjects.size() + newObjects.size());
-		std::move(std::begin(newObjects), std::end(newObjects), std::back_inserter(activeObjects));
-		newObjects.clear();
-	}
-	
 	// Start new components
-	for(auto& obj : activeObjects)
+	auto objectsWithNewComponentsCopy = objectsWithNewComponents;
+	objectsWithNewComponents.clear();
+	for(auto& obj : objectsWithNewComponentsCopy)
 	{
-		if (obj && obj->IsInitialized())
+		if (obj)
 		{
-			obj->Update_StartComponents();
+			obj->StartComponents();
 		}
 	}
 
 	// Update game objects
-	for(auto& obj : activeObjects)
+	auto tickObjectsCopy = tickObjects;
+	for(auto& obj : tickObjectsCopy)
 	{
-		if(obj && obj->IsInitialized())
+		if (obj)
 		{
-			obj->Update_TickComponents(deltaTime);
+			obj->TickComponents(deltaTime);
 		}
 	}
-
-	// Remove components pending deletion
-	for (auto& obj : activeObjects)
-	{
-		if (obj && obj->IsInitialized())
-		{
-			obj->Update_DestroyComponents();
-		}
-	}
-
-	// Remove game objects pending deletion
-	for (auto& obj : destroyedObjects)
-	{
-		activeObjects.erase(std::remove(activeObjects.begin(), activeObjects.end(), obj), activeObjects.end());
-	}
-	destroyedObjects.clear();
 }
 
 void Level::GetRenderRules(std::vector<RenderRule>& rules) const
 {
-	for (const auto& obj : activeObjects)
+	auto renderObjectsCopy = renderObjects;
+	for (const auto& obj : renderObjectsCopy)
 	{
-		obj->AppendRenderRules(rules);
+		if (obj)
+		{
+			obj->AppendRenderRules(rules);
+		}
 	}
 }

@@ -21,12 +21,17 @@ Vector2 GameRenderer::WorldToScreenPoint(Vector2 worldPosition)
 
 void GameRenderer::DrawSprite(std::string texturePath, Vector2 position, RenderPosition renderPos /*= RenderPosition::WORLD*/)
 {
+	Vector2 screenPos = WorldToScreenPoint(position);
 	const sf::Texture& texture = GetTexture(texturePath);
+
+	if (screenPos.x < - (int) texture.getSize().x || screenPos.y < -(int) texture.getSize().y || screenPos.x > nativeResolution.x || screenPos.y > nativeResolution.y)
+	{
+		// cull
+		return;
+	}
 
 	sf::Sprite sprite;
 	sprite.setTexture(texture);
-
-	Vector2 screenPos = WorldToScreenPoint(position);
 	sprite.setPosition(screenPos.x, screenPos.y);
 
 	renderWindow->draw(sprite);
@@ -34,12 +39,19 @@ void GameRenderer::DrawSprite(std::string texturePath, Vector2 position, RenderP
 
 void GameRenderer::DrawRect(Vector2 position, Vector2 size, RenderPosition renderPos /*= RenderPosition::WORLD*/)
 {
+	Vector2 screenPos = WorldToScreenPoint(position);
+
+	if (screenPos.x < -size.x || screenPos.y < size.y || screenPos.x > nativeResolution.x || screenPos.y > nativeResolution.y)
+	{
+		// cull
+		return;
+	}
+
 	sf::RectangleShape rectangle(sf::Vector2f(size.x, size.y));
 	rectangle.setOutlineColor(sf::Color::White);
 	rectangle.setOutlineThickness(1);
 	rectangle.setFillColor(sf::Color::Transparent);
 
-	Vector2 screenPos = WorldToScreenPoint(position);
 	rectangle.setPosition(screenPos.x, screenPos.y);
 
 	renderWindow->draw(rectangle);

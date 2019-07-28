@@ -1,5 +1,5 @@
 {
-    "name" : "PlayerCharacter",
+    "name" : "Wall",
     "components" : [
         {
             "_class" : "WallComponent"

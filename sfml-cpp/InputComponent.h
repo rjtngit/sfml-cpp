@@ -33,7 +33,8 @@ private:
 class InputComponent : public GameComponent
 {
 public: 
-	virtual void Tick(float deltaTime) override;
+	void Start() override;
+	void Tick(float deltaTime) override;
 
 	// VARIABLES
 public:
@@ -47,6 +48,8 @@ public:
 	InputState fire_right;
 	InputState dash;
 	InputState jump;
+
+
 
 
 };

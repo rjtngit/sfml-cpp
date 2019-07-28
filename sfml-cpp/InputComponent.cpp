@@ -4,6 +4,12 @@
 #include "TransformComponent.h"
 #include <iostream>
 
+
+void InputComponent::Start()
+{
+	EnableTick(true);
+}
+
 void InputComponent::Tick(float deltaTime)
 {
 	auto go = GetGameObject().lock();

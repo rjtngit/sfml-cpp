@@ -13,6 +13,8 @@ void UIFPSLabelComponent::Start()
 	transform->Position = Vector2::Zero;
 
 	pLabel = go->AddComponent<UILabelComponent>();
+
+	EnableTick(true);
 }
 
 void UIFPSLabelComponent::Tick(float deltaTime)

@@ -6,8 +6,11 @@ class UILabelComponent : public GameComponent
 	LOADABLE_CLASS(UILabelComponent)
 
 public:
+	void Start() override;
 	RenderRule GetRenderRule() override;
 	void Render(GameRenderer& target) override;
+
+
 
 	// VARIABLES
 public:

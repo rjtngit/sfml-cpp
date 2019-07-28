@@ -3,6 +3,8 @@
 #include <memory>
 #include <utility>
 #include "GameComponent.h"
+#include <set>
+#include <unordered_set>
 
 class Level;
 class TransformComponent;
@@ -15,8 +17,6 @@ public:
 	void InitFromFile(std::weak_ptr<Level> level, std::string path);
 	void InitFromFile(std::weak_ptr<Level> level, std::string path, float overrideX, float overrideY);
 
-	bool IsInitialized() const { return initialized; }
-
 	std::weak_ptr<GameComponent> AddComponent(std::string className);
 
 	template<typename T>
@@ -26,27 +26,32 @@ public:
 	std::weak_ptr<T> GetComponent();
 
 	std::weak_ptr<Level> GetLevel() { return level; }
-	std::weak_ptr<TransformComponent> GetTransform() { return transform;  }
+	std::weak_ptr<TransformComponent> GetTransform() const { return transform;  }
 
 	void DestroyComponent(std::weak_ptr<GameComponent> component);
+	void StartComponents();
+	void TickComponents(float deltaTime);
 
-	void Update_DestroyComponents();
-	void Update_StartComponents();
-	void Update_TickComponents(float deltaTime);
+	void RegisterForTick(std::weak_ptr<GameComponent> component);
+	void UnregisterForTick(std::weak_ptr<GameComponent> component);
+	void RegisterForRender(std::weak_ptr<GameComponent> component);
+	void UnregisterForRender(std::weak_ptr<GameComponent> component);
+	void RegisterForStart(std::weak_ptr<GameComponent> component);
+	void UnregisterForStart(std::weak_ptr<GameComponent> component);
 
 	void AppendRenderRules(std::vector<RenderRule>& rules) const;
 
 	// VARIABLES
 private:
-	bool initialized = false;
 	std::string name;
 
 	std::weak_ptr<Level> level;
 	std::weak_ptr<TransformComponent> transform;
 
-	std::vector<std::shared_ptr<GameComponent>> activeComponents;
-	std::vector<std::shared_ptr<GameComponent>> newComponents;
-	std::vector<std::shared_ptr<GameComponent>> destroyedComponents;
+	std::unordered_set<std::shared_ptr<GameComponent>> components;
+	std::unordered_set<std::shared_ptr<GameComponent>> newComponents;
+	std::unordered_set<std::shared_ptr<GameComponent>> tickComponents;
+	std::unordered_set<std::shared_ptr<GameComponent>> renderComponents;
 };
 
 
@@ -56,7 +61,8 @@ std::weak_ptr<T> GameObject::AddComponent()
 {
 	std::shared_ptr<T> comp = std::make_shared<T>();
 	comp->Init(shared_from_this());
-	newComponents.push_back(comp);
+	components.insert(comp);
+
 	return comp;
 }
 
@@ -65,16 +71,7 @@ std::weak_ptr<T> GameObject::GetComponent()
 {
 	std::shared_ptr<T> result = nullptr;
 
-	for (auto& comp : activeComponents) 
-	{
-		result = std::dynamic_pointer_cast<T>(comp);
-		if (result)
-		{
-			return result;
-		}
-	}
-
-	for (auto& comp : newComponents)
+	for (auto& comp : components)
 	{
 		result = std::dynamic_pointer_cast<T>(comp);
 		if (result)

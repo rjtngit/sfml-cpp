@@ -3,23 +3,13 @@
 #include "GameObject.h"
 #include "TransformComponent.h"
 #include "Level.h"
+#include "SFML/Graphics/Rect.hpp"
 
 
 
 void BoxColliderComponent::Start()
 {
-
-}
-
-void BoxColliderComponent::Tick(float deltaTime)
-{
-	auto go = GetGameObject().lock();
-	auto transform = go->GetTransform().lock();
-
-	rect.left = transform->Position.x + offsetX;
-	rect.top = transform->Position.y + offsetY;
-	rect.width = width;
-	rect.height = height;
+	EnableRender(debugDraw);
 }
 
 RenderRule BoxColliderComponent::GetRenderRule()
@@ -39,21 +29,42 @@ RenderRule BoxColliderComponent::GetRenderRule()
 
 void BoxColliderComponent::Render(GameRenderer& target)
 {
-	target.DrawRect(Vector2(rect.left, rect.top), Vector2(rect.width, rect.height));
+	auto go = GetGameObject().lock();
+	auto transform = go->GetTransform().lock();
+
+	target.DrawRect(transform->Position, Vector2(width, height));
 }
+
+bool BoxColliderComponent::Intersects(const BoxColliderComponent* other) const
+{
+	auto go = GetGameObject().lock();
+	auto transform = go->GetTransform().lock();
+
+	auto otherGo = other->GetGameObject().lock();
+	auto otherTransform = otherGo->GetTransform().lock();
+
+	sf::IntRect thisRect;
+	thisRect.left = transform->Position.x + offsetX;
+	thisRect.top = transform->Position.y + offsetY;
+	thisRect.width = width;
+	thisRect.height = height;
+
+	sf::IntRect otherRect;
+	otherRect.left = otherTransform->Position.x + other->offsetX;
+	otherRect.top = otherTransform->Position.y + other->offsetY;
+	otherRect.width = other->width;
+	otherRect.height = other->height;
+
+	return thisRect.intersects(otherRect);
+}
+
 
 std::vector<std::weak_ptr<GameObject>> BoxColliderComponent::GetOverlappingObjects()
 {
 	std::vector<std::weak_ptr<GameObject>> result;
 
 	auto go = GetGameObject().lock();
-	auto transform = go->GetTransform().lock();
 	auto level = go->GetLevel().lock();
-
-	// Use current transform position to test for collisions because rect may not be updated yet
-	sf::IntRect testRect = rect;
-	testRect.left = transform->Position.x + offsetX;
-	testRect.top = transform->Position.y + offsetY;
 
 	for (auto pObj : level->GetObjects())
 	{
@@ -67,7 +78,7 @@ std::vector<std::weak_ptr<GameObject>> BoxColliderComponent::GetOverlappingObjec
 				continue;
 			}
 
-			if (col->rect.intersects(testRect))
+			if (col->Intersects(this))
 			{
 				result.push_back(pObj);
 			}

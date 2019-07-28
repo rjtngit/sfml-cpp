@@ -23,8 +23,6 @@ void GameObject::Init(std::weak_ptr<Level> level, std::string name, float x, flo
 	pTransform->Position.y = y;
 
 	this->name = name;
-
-	initialized = true;
 }
 
 void GameObject::Init(std::weak_ptr<Level> level, float x, float y)
@@ -98,8 +96,6 @@ void GameObject::InitFromFile(std::weak_ptr<Level> level, std::string path)
 		std::cout << "GameObject::InitFromFile - Unable to open file " << path << std::endl;
 	}
 
-	initialized = true;
-
 }
 
 void GameObject::InitFromFile(std::weak_ptr<Level> level, std::string path, float overrideX, float overrideY)
@@ -118,7 +114,7 @@ std::weak_ptr<GameComponent> GameObject::AddComponent(std::string className)
 	if (comp)
 	{
 		comp->Init(shared_from_this());
-		newComponents.push_back(comp);
+		components.insert(comp);
 	}
 	else
 	{
@@ -129,49 +125,100 @@ std::weak_ptr<GameComponent> GameObject::AddComponent(std::string className)
 
 void GameObject::DestroyComponent(std::weak_ptr<GameComponent> component)
 {
-	destroyedComponents.push_back(component.lock());
+	UnregisterForTick(component);
+	UnregisterForRender(component);
+	UnregisterForStart(component);
+
+	components.erase(component.lock());
 }
 
-void GameObject::Update_DestroyComponents()
+void GameObject::RegisterForTick(std::weak_ptr<GameComponent> component)
 {
-	// Remove components pending deletion
-	for(auto& comp : destroyedComponents)
-	{
-		activeComponents.erase(std::remove(activeComponents.begin(), activeComponents.end(), comp), activeComponents.end());
-		newComponents.erase(std::remove(newComponents.begin(), newComponents.end(), comp), newComponents.end());
-	}
-	destroyedComponents.clear();
+	tickComponents.insert(component.lock());
+
+	level.lock()->RegisterForTick(shared_from_this());
 }
 
-void GameObject::Update_StartComponents()
+void GameObject::UnregisterForTick(std::weak_ptr<GameComponent> component)
 {
-	// Start and move new components to active list
-	int numNew = newComponents.size();
-	activeComponents.reserve(activeComponents.size() + numNew);
-    std::move(std::begin(newComponents), std::end(newComponents), std::back_inserter(activeComponents));
-    newComponents.clear();
+	tickComponents.erase(component.lock());
 
-	for (size_t i = activeComponents.size() - numNew; i < activeComponents.size(); i++)
+	if (tickComponents.size() == 0)
 	{
-		auto comp = activeComponents[i];
-		comp->Start();
+		level.lock()->UnregisterForTick(shared_from_this());
 	}
 }
 
-void GameObject::Update_TickComponents(float deltaTime)
+void GameObject::RegisterForRender(std::weak_ptr<GameComponent> component)
 {
-	// Update components
-	for(auto& comp : activeComponents)
+	renderComponents.insert(component.lock());
+
+	level.lock()->RegisterForRender(shared_from_this());
+
+}
+
+void GameObject::UnregisterForRender(std::weak_ptr<GameComponent> component)
+{
+	renderComponents.erase(component.lock());
+
+	if (renderComponents.size() == 0)
 	{
-		comp->Tick(deltaTime);
+		level.lock()->UnregisterForRender(shared_from_this());
+	}
+}
+
+void GameObject::RegisterForStart(std::weak_ptr<GameComponent> component)
+{
+	newComponents.insert(component.lock());
+
+	level.lock()->RegisterForStart(shared_from_this());
+
+}
+
+void GameObject::UnregisterForStart(std::weak_ptr<GameComponent> component)
+{
+	newComponents.erase(component.lock());
+
+	if (newComponents.size() == 0)
+	{
+		level.lock()->UnregisterForStart(shared_from_this());
 	}
 }
 
 void GameObject::AppendRenderRules(std::vector<RenderRule>& rules) const
 {
-	for (const auto& comp : activeComponents)
+	for (const auto& comp : renderComponents)
 	{
-		rules.push_back(comp->GetRenderRule());
+		if (comp)
+		{
+			rules.push_back(comp->GetRenderRule());
+		}
+	}
+}
+
+
+void GameObject::StartComponents()
+{
+	auto newComponentsCopy = newComponents;
+	newComponents.clear();
+	for (auto& comp : newComponentsCopy)
+	{
+		if (comp)
+		{
+			comp->Start();
+		}
+	}
+}
+
+void GameObject::TickComponents(float deltaTime)
+{
+	auto tickComponentsCopy = tickComponents;
+	for (auto& comp : tickComponentsCopy)
+	{
+		if (comp)
+		{
+			comp->Tick(deltaTime);
+		}
 	}
 }
 

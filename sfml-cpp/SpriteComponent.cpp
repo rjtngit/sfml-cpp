@@ -8,12 +8,7 @@
 
 void SpriteComponent::Start()
 {
-
-}
-
-void SpriteComponent::Tick(float deltaTime)
-{
-
+	EnableRender(true);
 }
 
 RenderRule SpriteComponent::GetRenderRule() 

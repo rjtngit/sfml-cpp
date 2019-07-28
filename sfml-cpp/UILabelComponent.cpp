@@ -5,6 +5,12 @@
 #include "TransformComponent.h"
 #include "Paths.h"
 
+
+void UILabelComponent::Start()
+{
+	EnableRender(true);
+}
+
 RenderRule UILabelComponent::GetRenderRule()
 {
 	RenderRule renderRule;

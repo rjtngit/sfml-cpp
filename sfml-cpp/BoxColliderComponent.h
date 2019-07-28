@@ -9,9 +9,9 @@ class BoxColliderComponent : public GameComponent
 
 private:
 	void Start() override;
-	void Tick(float deltaTime) override;
 	RenderRule GetRenderRule() override;
 	void Render(GameRenderer& target) override;
+	bool Intersects(const BoxColliderComponent* other) const;
 
 public:
 	std::vector<std::weak_ptr<GameObject>> GetOverlappingObjects();
@@ -37,10 +37,7 @@ public:
 	LOADABLE_FLOAT(offsetY)
 	float offsetY = 0.0f;
 
-	bool debugDraw = true;
-
-private:
-	sf::IntRect rect;
+	bool debugDraw = false;
 };
 
 template<typename T>
