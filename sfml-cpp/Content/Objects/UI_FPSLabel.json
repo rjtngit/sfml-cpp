@@ -1,0 +1,8 @@
+{
+    "name" : "UI_FPSLabel",
+    "components" : [
+        {
+            "_class" : "UIFPSLabelComponent"
+        }
+    ]
+}

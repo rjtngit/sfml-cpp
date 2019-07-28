@@ -3,6 +3,8 @@
 struct Vector2
 {
 public:
+	static const Vector2 Zero;
+
 	Vector2() {}
 	Vector2(float x, float y)
 	{

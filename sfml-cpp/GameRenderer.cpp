@@ -1,5 +1,6 @@
 #include "GameRenderer.h"
 #include "SFML/System/Vector2.hpp"
+#include "SFML/Graphics/Text.hpp"
 
 
 GameRenderer::GameRenderer(std::shared_ptr<sf::RenderWindow> renderWindow, Vector2 nativeResolution)
@@ -42,6 +43,20 @@ void GameRenderer::DrawRect(Vector2 position, Vector2 size, RenderPosition rende
 	rectangle.setPosition(screenPos.x, screenPos.y);
 
 	renderWindow->draw(rectangle);
+}
+
+void GameRenderer::DrawText(std::string text, std::string fontPath, Vector2 position, RenderPosition renderPos /*= RenderPosition::SCREEN*/)
+{
+	sf::Font font;
+	font.loadFromFile(fontPath);
+
+	sf::Text sftext;
+	sftext.setFont(font);
+	sftext.setString(text);
+	sftext.setFillColor(sf::Color::White);
+	sftext.setPosition(position.x, position.y);
+
+	renderWindow->draw(sftext);
 }
 
 const sf::Texture& GameRenderer::GetTexture(std::string path)

@@ -18,7 +18,7 @@ void GameInstance::Update()
 	float dt = deltaClock.restart().asSeconds();
 
 	float fps = 1.0f / dt;
-	if (fps <= 10.0f)
+	if (fps <= 5.0f)
 	{
 		// Hack for very low fps or game freeze (e.g. moving the window around). Stop update so physics doesn't break.
 		dt = 0;

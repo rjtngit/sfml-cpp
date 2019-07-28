@@ -84,6 +84,12 @@
     <ClCompile Include="AudioComponent.cpp">
       <Filter>Source\Game</Filter>
     </ClCompile>
+    <ClCompile Include="UILabelComponent.cpp">
+      <Filter>Source\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="UIFPSLabelComponent.cpp">
+      <Filter>Source\Game</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="json.hpp">
@@ -153,6 +159,12 @@
       <Filter>Source\Game</Filter>
     </ClInclude>
     <ClInclude Include="AudioComponent.h">
+      <Filter>Source\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="UILabelComponent.h">
+      <Filter>Source\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="UIFPSLabelComponent.h">
       <Filter>Source\Game</Filter>
     </ClInclude>
   </ItemGroup>

@@ -6,7 +6,8 @@
 
 enum class RenderPosition
 {
-	WORLD
+	WORLD,
+	SCREEN
 };
 
 class GameRenderer
@@ -18,6 +19,7 @@ public:
 
 	void DrawSprite(std::string texturePath, Vector2 position, RenderPosition renderPos = RenderPosition::WORLD);
 	void DrawRect(Vector2 position, Vector2 size, RenderPosition renderPos = RenderPosition::WORLD);
+	void DrawText(std::string text, std::string fontPath, Vector2 position, RenderPosition renderPos = RenderPosition::SCREEN);
 
 	void SetCameraTarget(Vector2 target) { this->cameraTarget = target; }
 

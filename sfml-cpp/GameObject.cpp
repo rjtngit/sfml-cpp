@@ -115,8 +115,15 @@ void GameObject::InitFromFile(std::weak_ptr<Level> level, std::string path, floa
 std::weak_ptr<GameComponent> GameObject::AddComponent(std::string className)
 {
 	std::shared_ptr<GameComponent> comp = GameComponentLoader::CreateNew(className);
-	comp->Init(shared_from_this());
-	newComponents.push_back(comp);
+	if (comp)
+	{
+		comp->Init(shared_from_this());
+		newComponents.push_back(comp);
+	}
+	else
+	{
+		std::cout << "GameObject::AddComponent - Failed to create " << className << std::endl;
+	}
 	return comp;
 }
 
