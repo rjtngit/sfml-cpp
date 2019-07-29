@@ -1,17 +1,31 @@
 {
     "name" : "PlayerCharacter",
     "components" : [
-    	{
-    		"_class" : "PlayerComponent",
+        {
+            "_class" : "PlayerComponent",
             "playerId" : 1
-    	},
-    	{
-    		"_class" : "SpriteComponent",
-    		"spritePath" : "Sprites/player_idle.png",
-    		"renderOrder" : 100,
+        },
+        {
+            "_class" : "SpriteComponent",
+            "name" : "idle",
+            "spritePath" : "Sprites/player_idle.png",
+            "renderOrder" : 100,
             "offsetY" : -10.0,
             "offsetX" : -20.0
-    	},
+        },
+        {
+            "_class" : "AnimatedSpriteComponent",
+            "name" : "run",
+            "spritePath" : "Sprites/player_run.png",
+            "renderOrder" : 100,
+            "offsetY" : -24.0,
+            "offsetX" : -50.0,
+            "rows" : 2,
+            "cols" : 7,
+            "texWidth" : 1050,
+            "texHeight" : 300,
+            "frameTime" : 0.08
+        },
         {
             "_class" : "BoxColliderComponent",
             "width" : 45.0,

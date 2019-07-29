@@ -25,6 +25,9 @@ public:
 	template<typename T>
 	std::weak_ptr<T> GetComponent();
 
+	template<typename T>
+	std::vector<std::weak_ptr<T>> GetComponents();
+
 	std::weak_ptr<Level> GetLevel() { return level; }
 	std::weak_ptr<TransformComponent> GetTransform() const { return transform;  }
 
@@ -77,6 +80,25 @@ std::weak_ptr<T> GameObject::GetComponent()
 		if (result)
 		{
 			return result;
+		}
+	}
+
+	return result;
+}
+
+
+template<typename T>
+std::vector<std::weak_ptr<T>>
+GameObject::GetComponents()
+{
+	std::vector<std::weak_ptr<T>> result;
+
+	for (auto& comp : components)
+	{
+		auto tComp = std::dynamic_pointer_cast<T>(comp);
+		if (tComp)
+		{
+			result.push_back(tComp);
 		}
 	}
 

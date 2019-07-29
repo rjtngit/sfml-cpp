@@ -170,6 +170,7 @@ XCOPY "$(SolutionDir)SFML-2.5.1\bin\openal32.dll" "$(TargetDir)" /S /Y /R
     <ClCompile Include="PlayerBulletComponent.cpp" />
     <ClCompile Include="PlayerComponent.cpp" />
     <ClCompile Include="RenderRule.cpp" />
+    <ClCompile Include="AnimatedSpriteComponent.cpp" />
     <ClCompile Include="SpriteComponent.cpp" />
     <ClCompile Include="TransformComponent.cpp" />
     <ClCompile Include="UIFPSLabelComponent.cpp" />
@@ -190,6 +191,8 @@ XCOPY "$(SolutionDir)SFML-2.5.1\bin\openal32.dll" "$(TargetDir)" /S /Y /R
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="GameWindow.h" />
     <ClInclude Include="GameRenderer.h" />
+    <ClInclude Include="AnimatedSpriteComponent.h" />
+    <ClInclude Include="Rect.h" />
     <ClInclude Include="UIFPSLabelComponent.h" />
     <ClInclude Include="UILabelComponent.h" />
     <ClInclude Include="BlockingComponent.h" />

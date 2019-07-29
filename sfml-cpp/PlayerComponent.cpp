@@ -10,6 +10,9 @@
 #include "PlayerBulletComponent.h"
 #include "BlockingComponent.h"
 #include "AudioComponent.h"
+#include "SpriteComponent.h"
+
+
 
 void PlayerComponent::Start()
 {
@@ -46,15 +49,41 @@ void PlayerComponent::Tick(float deltaTime)
 
 	stunTimeLeft -= deltaTime;
 
-	// Update character
+	// Poll input / update position
 	TickMovement(deltaTime);
 	TickJumpFall(deltaTime);
 	TickFire(deltaTime);
+
+	// Update animation
+	SetAnimation(isGrounded && velocity.x != 0 ? PlayerAnimationId::RUN : PlayerAnimationId::IDLE);
 }
 
 void PlayerComponent::Hit()
 {
 	stunTimeLeft = 0.8f;
+}
+
+void PlayerComponent::SetAnimation(PlayerAnimationId animId)
+{
+	auto go = GetGameObject().lock();
+	auto sprites = go->GetComponents<SpriteComponent>();
+
+	for (auto pSprite : sprites)
+	{
+		auto sprite = pSprite.lock();
+		switch (animId)
+		{
+		case PlayerAnimationId::IDLE:
+			sprite->visible = sprite->name == "idle";
+			break;
+		case PlayerAnimationId::RUN:
+			sprite->visible = sprite->name == "run";
+			break;
+		default:
+			sprite->visible = false;
+			break;
+		}
+	}
 }
 
 void PlayerComponent::TickMovement(float deltaTime)

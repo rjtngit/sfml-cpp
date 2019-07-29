@@ -5,6 +5,15 @@
 
 class AudioComponent;
 
+enum class PlayerAnimationId
+{
+	IDLE,
+	RUN,
+	STUNNED,
+	ATTACK,
+
+};
+
 class PlayerComponent : public GameComponent
 {
 	LOADABLE_CLASS(PlayerComponent)
@@ -15,6 +24,7 @@ public:
 
 	void Hit();
 	bool IsStunned() { return stunTimeLeft > 0; };
+	void SetAnimation(PlayerAnimationId animId);
 
 private:
 	void TickMovement(float deltaTime);

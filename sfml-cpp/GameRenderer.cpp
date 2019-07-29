@@ -34,6 +34,25 @@ void GameRenderer::DrawSprite(std::string texturePath, Vector2 position, RenderP
 	renderWindow->draw(sprite);
 }
 
+void GameRenderer::DrawSpriteCropped(std::string texturePath, Vector2 position, Rect crop, RenderPosition renderPos /*= RenderPosition::WORLD*/)
+{
+	Vector2 screenPos = WorldToScreenPoint(position);
+	const sf::Texture& texture = GetTexture(texturePath);
+
+	if (screenPos.x < -(int)texture.getSize().x || screenPos.y < -(int)texture.getSize().y || screenPos.x > nativeResolution.x || screenPos.y > nativeResolution.y)
+	{
+		// cull
+		return;
+	}
+
+	sf::Sprite sprite;
+	sprite.setTexture(texture);
+	sprite.setTextureRect(sf::IntRect(crop.left, crop.top, crop.width, crop.height));
+	sprite.setPosition(screenPos.x, screenPos.y);
+
+	renderWindow->draw(sprite);
+}
+
 void GameRenderer::DrawRect(Vector2 position, Vector2 size, RenderPosition renderPos /*= RenderPosition::WORLD*/)
 {
 	Vector2 screenPos = WorldToScreenPoint(position);

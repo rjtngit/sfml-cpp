@@ -3,6 +3,7 @@
 #include "Vector2.h"
 #include "SFML/Graphics.hpp"
 #include "SFML/Graphics/RenderWindow.hpp"
+#include "Rect.h"
 
 enum class RenderPosition
 {
@@ -18,6 +19,7 @@ public:
 	Vector2 WorldToScreenPoint(Vector2 worldPosition) const;
 
 	void DrawSprite(std::string texturePath, Vector2 position, RenderPosition renderPos = RenderPosition::WORLD);
+	void DrawSpriteCropped(std::string texturePath, Vector2 position, Rect crop, RenderPosition renderPos = RenderPosition::WORLD);
 	void DrawRect(Vector2 position, Vector2 size, RenderPosition renderPos = RenderPosition::WORLD);
 	void DrawText(std::string text, std::string fontPath, Vector2 position, RenderPosition renderPos = RenderPosition::SCREEN);
 

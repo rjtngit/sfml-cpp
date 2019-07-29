@@ -4,6 +4,7 @@
 #include "TransformComponent.h"
 #include "Paths.h"
 #include "RenderRule.h"
+#include "Rect.h"
 
 
 void SpriteComponent::Start()
@@ -14,7 +15,7 @@ void SpriteComponent::Start()
 RenderRule SpriteComponent::GetRenderRule() 
 {
 	RenderRule renderRule;
-	renderRule.render = true;
+	renderRule.render = visible;
 	renderRule.gameComponent = this;
 	renderRule.order = renderOrder;
 
@@ -23,6 +24,13 @@ RenderRule SpriteComponent::GetRenderRule()
 
 void SpriteComponent::Render(GameRenderer& target) 
 {
-	target.DrawSprite(Paths::GetInContentPath(spritePath), GetGameObject().lock()->GetTransform().lock()->Position + Vector2(offsetX, offsetY));
+	if (cropTexture)
+	{
+		target.DrawSpriteCropped(Paths::GetInContentPath(spritePath), GetGameObject().lock()->GetTransform().lock()->Position + Vector2(offsetX, offsetY), Rect(cropLeft, cropTop, cropWidth, cropHeight));
+	}
+	else
+	{
+		target.DrawSprite(Paths::GetInContentPath(spritePath), GetGameObject().lock()->GetTransform().lock()->Position + Vector2(offsetX, offsetY));
+	}
 }
 
