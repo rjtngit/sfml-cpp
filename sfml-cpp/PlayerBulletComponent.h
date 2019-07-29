@@ -16,6 +16,7 @@ public:
 	float speed = 0.0f;
 
 	Vector2 direction;
+	int playerId = -1;
 
 private:
 	float elapsed = 0.0f;

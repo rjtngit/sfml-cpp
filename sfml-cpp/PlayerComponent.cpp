@@ -44,11 +44,17 @@ void PlayerComponent::Tick(float deltaTime)
 	auto level = go->GetLevel().lock();
 	auto collider = go->GetComponent<BoxColliderComponent>().lock();
 
+	stunTimeLeft -= deltaTime;
+
 	// Update character
 	TickMovement(deltaTime);
 	TickJumpFall(deltaTime);
 	TickFire(deltaTime);
+}
 
+void PlayerComponent::Hit()
+{
+	stunTimeLeft = 0.8f;
 }
 
 void PlayerComponent::TickMovement(float deltaTime)
@@ -61,7 +67,7 @@ void PlayerComponent::TickMovement(float deltaTime)
 	Vector2 snapshotPosition = transform->Position;
 
 	// Get movement input
-	if (input->move_right.GetState())
+	if (!IsStunned() && input->move_right.GetState())
 	{
 		velocity.x += acceleration * deltaTime;
 		if (velocity.x > moveSpeed)
@@ -70,7 +76,7 @@ void PlayerComponent::TickMovement(float deltaTime)
 		}
 
 	}
-	else if (input->move_left.GetState())
+	else if (!IsStunned() && input->move_left.GetState())
 	{
 		velocity.x -= acceleration * deltaTime;
 		if (velocity.x < -moveSpeed)
@@ -134,7 +140,7 @@ void PlayerComponent::TickJumpFall(float deltaTime)
 	Vector2 snapshotPosition = transform->Position;
 
 	// Do jump
-	if (input->jump.GetStateDown())
+	if (!IsStunned() && input->jump.GetState())
 	{
 		if (!isJumping && isGrounded)
 		{
@@ -180,33 +186,39 @@ void PlayerComponent::TickFire(float deltaTime)
 	bool isFiring = false;
 	fireCooldown -= deltaTime;
 
-	if (input->fire_up.GetState())
+	if (!IsStunned())
 	{
-		fireDirection.y = -1;
-		isFiring = true;
+		if (input->fire_up.GetState())
+		{
+			fireDirection.y = -1;
+			isFiring = true;
+		}
+		if (input->fire_down.GetState())
+		{
+			fireDirection.y = 1;
+			isFiring = true;
+		}
+		if (input->fire_left.GetState())
+		{
+			fireDirection.x = -1;
+			isFiring = true;
+		}
+		if (input->fire_right.GetState())
+		{
+			fireDirection.x = 1;
+			isFiring = true;
+		}
 	}
-	if (input->fire_down.GetState())
-	{
-		fireDirection.y = 1;
-		isFiring = true;
-	}
-	if (input->fire_left.GetState())
-	{
-		fireDirection.x = -1;
-		isFiring = true;
-	}
-	if (input->fire_right.GetState())
-	{
-		fireDirection.x = 1;
-		isFiring = true;
-	}
+	
 
 	if (isFiring && fireCooldown <= 0.0f)
 	{
 		auto bulletGo = level->SpawnObjectFromFile(Paths::GetObjectPath("PlayerBullet.json"), transform->Position).lock();
 		auto bullet = bulletGo->GetComponent<PlayerBulletComponent>().lock();
 		bullet->direction = fireDirection;
-		fireCooldown = 0.1f;
+		bullet->playerId = playerId;
+
+		fireCooldown = 1.2f;
 
 		// Play fire audio
 		auto audio = pAudio_Fire.lock();

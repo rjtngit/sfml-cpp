@@ -8,14 +8,14 @@
     	{
     		"_class" : "SpriteComponent",
     		"spritePath" : "Sprites/player_idle.png",
-    		"renderOrder" : 100
+    		"renderOrder" : 100,
+            "offsetY" : -10.0,
+            "offsetX" : -20.0
     	},
-                {
+        {
             "_class" : "BoxColliderComponent",
             "width" : 45.0,
-            "height" : 100.0,
-            "offsetX": 20.0,
-            "offsetY": 11.0
+            "height" : 100.0
         }
     ]
 }

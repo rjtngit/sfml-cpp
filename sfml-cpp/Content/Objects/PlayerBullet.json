@@ -3,7 +3,7 @@
     "components" : [
     	{
     		"_class" : "PlayerBulletComponent",
-    		"speed" : 3000.0
+    		"speed" : 2200.0
     	},
     	{
     		"_class" : "SpriteComponent",

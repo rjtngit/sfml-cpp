@@ -6,6 +6,7 @@
 #include "Level.h"
 #include "BlockingComponent.h"
 #include "EnemyComponent.h"
+#include "PlayerComponent.h"
 
 void PlayerBulletComponent::Start()
 {
@@ -39,7 +40,18 @@ void PlayerBulletComponent::Tick(float deltaTime)
 			hitEnemy->Hit();
 			level->DestroyObject(go);
 		}
-		else if (!obj->GetComponent<BlockingComponent>().expired() && obj->GetComponent<BlockingComponent>().lock()->blockBullet)
+
+		auto pHitPlayer = obj->GetComponent<PlayerComponent>();
+		if (!pHitPlayer.expired() && pHitPlayer.lock()->playerId != playerId)
+		{
+			// Hit other player
+			auto hitPlayer = pHitPlayer.lock();
+			hitPlayer->Hit();
+			level->DestroyObject(go);
+		}
+
+		auto pHitWall = obj->GetComponent<BlockingComponent>();
+		if (!pHitWall.expired() && pHitWall.lock()->blockBullet)
 		{
 			// Hit wall
 			level->DestroyObject(go);

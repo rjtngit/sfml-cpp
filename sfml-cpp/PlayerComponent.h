@@ -13,6 +13,9 @@ public:
 	void Start() override;
 	void Tick(float deltaTime) override;
 
+	void Hit();
+	bool IsStunned() { return stunTimeLeft > 0; };
+
 private:
 	void TickMovement(float deltaTime);
 	void TickJumpFall(float deltaTime);
@@ -48,5 +51,7 @@ private:
 	bool isJumping = false;
 	bool isGrounded = false;
 	float fireCooldown = 0.0f;
+
+	float stunTimeLeft = 0.0f;
 };
 
