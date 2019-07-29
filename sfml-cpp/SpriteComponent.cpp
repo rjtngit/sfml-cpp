@@ -24,13 +24,15 @@ RenderRule SpriteComponent::GetRenderRule()
 
 void SpriteComponent::Render(GameRenderer& target) 
 {
+	Vector2 position = GetGameObject().lock()->GetTransform().lock()->Position + Vector2(offsetX, offsetY);
+
 	if (cropTexture)
 	{
-		target.DrawSpriteCropped(Paths::GetInContentPath(spritePath), GetGameObject().lock()->GetTransform().lock()->Position + Vector2(offsetX, offsetY), Rect(cropLeft, cropTop, cropWidth, cropHeight));
+		target.DrawSpriteCropped(Paths::GetInContentPath(spritePath), Rect(cropLeft, cropTop, cropWidth, cropHeight), position, flipX);
 	}
 	else
 	{
-		target.DrawSprite(Paths::GetInContentPath(spritePath), GetGameObject().lock()->GetTransform().lock()->Position + Vector2(offsetX, offsetY));
+		target.DrawSprite(Paths::GetInContentPath(spritePath), position, flipX);
 	}
 }
 

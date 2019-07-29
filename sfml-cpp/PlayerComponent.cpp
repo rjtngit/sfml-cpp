@@ -55,7 +55,7 @@ void PlayerComponent::Tick(float deltaTime)
 	TickFire(deltaTime);
 
 	// Update animation
-	SetAnimation(isGrounded && velocity.x != 0 ? PlayerAnimationId::RUN : PlayerAnimationId::IDLE);
+	UpdateAnimation(isGrounded && velocity.x != 0 ? PlayerAnimationId::RUN : PlayerAnimationId::IDLE);
 }
 
 void PlayerComponent::Hit()
@@ -63,28 +63,7 @@ void PlayerComponent::Hit()
 	stunTimeLeft = 0.8f;
 }
 
-void PlayerComponent::SetAnimation(PlayerAnimationId animId)
-{
-	auto go = GetGameObject().lock();
-	auto sprites = go->GetComponents<SpriteComponent>();
 
-	for (auto pSprite : sprites)
-	{
-		auto sprite = pSprite.lock();
-		switch (animId)
-		{
-		case PlayerAnimationId::IDLE:
-			sprite->visible = sprite->name == "idle";
-			break;
-		case PlayerAnimationId::RUN:
-			sprite->visible = sprite->name == "run";
-			break;
-		default:
-			sprite->visible = false;
-			break;
-		}
-	}
-}
 
 void PlayerComponent::TickMovement(float deltaTime)
 {
@@ -254,4 +233,32 @@ void PlayerComponent::TickFire(float deltaTime)
 		audio->Play();
 	}
 
+}
+
+void PlayerComponent::UpdateAnimation(PlayerAnimationId animId)
+{
+	auto go = GetGameObject().lock();
+	auto sprites = go->GetComponents<SpriteComponent>();
+
+	for (auto pSprite : sprites)
+	{
+		auto sprite = pSprite.lock();
+		switch (animId)
+		{
+		case PlayerAnimationId::IDLE:
+			sprite->visible = sprite->name == "idle";
+			break;
+		case PlayerAnimationId::RUN:
+			sprite->visible = sprite->name == "run";
+			break;
+		default:
+			sprite->visible = false;
+			break;
+		}
+
+		if (velocity.x != 0 && isGrounded)
+		{
+			sprite->flipX = velocity.x < 0;
+		}
+	}
 }

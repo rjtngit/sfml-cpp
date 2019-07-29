@@ -16,10 +16,15 @@ Vector2 GameRenderer::WorldToScreenPoint(Vector2 worldPosition) const
 	return Vector2::WorldToScreenPoint(worldPosition, cameraTarget, nativeResolution);
 }
 
-void GameRenderer::DrawSprite(std::string texturePath, Vector2 position, RenderPosition renderPos /*= RenderPosition::WORLD*/)
+void GameRenderer::DrawSprite(std::string texturePath, Vector2 position, bool flipX, RenderPosition renderPos /*= RenderPosition::WORLD*/)
 {
 	Vector2 screenPos = WorldToScreenPoint(position);
 	const sf::Texture& texture = GetTexture(texturePath);
+
+	if (flipX)
+	{
+		screenPos.x += texture.getSize().x;
+	}
 
 	if (screenPos.x < - (int) texture.getSize().x || screenPos.y < -(int) texture.getSize().y || screenPos.x > nativeResolution.x || screenPos.y > nativeResolution.y)
 	{
@@ -28,16 +33,24 @@ void GameRenderer::DrawSprite(std::string texturePath, Vector2 position, RenderP
 	}
 
 	sf::Sprite sprite;
+
 	sprite.setTexture(texture);
+
+	sprite.setScale(flipX ? -1 : 1, 1);
 	sprite.setPosition(screenPos.x, screenPos.y);
 
 	renderWindow->draw(sprite);
 }
 
-void GameRenderer::DrawSpriteCropped(std::string texturePath, Vector2 position, Rect crop, RenderPosition renderPos /*= RenderPosition::WORLD*/)
+void GameRenderer::DrawSpriteCropped(std::string texturePath, Rect crop, Vector2 position, bool flipX, RenderPosition renderPos /*= RenderPosition::WORLD*/)
 {
 	Vector2 screenPos = WorldToScreenPoint(position);
 	const sf::Texture& texture = GetTexture(texturePath);
+
+	if (flipX)
+	{
+		screenPos.x += crop.width;
+	}
 
 	if (screenPos.x < -(int)texture.getSize().x || screenPos.y < -(int)texture.getSize().y || screenPos.x > nativeResolution.x || screenPos.y > nativeResolution.y)
 	{
@@ -46,9 +59,12 @@ void GameRenderer::DrawSpriteCropped(std::string texturePath, Vector2 position, 
 	}
 
 	sf::Sprite sprite;
+
 	sprite.setTexture(texture);
 	sprite.setTextureRect(sf::IntRect(crop.left, crop.top, crop.width, crop.height));
+
 	sprite.setPosition(screenPos.x, screenPos.y);
+	sprite.setScale(flipX ? -1 : 1, 1);
 
 	renderWindow->draw(sprite);
 }

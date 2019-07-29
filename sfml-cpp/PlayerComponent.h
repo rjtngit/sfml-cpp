@@ -24,12 +24,13 @@ public:
 
 	void Hit();
 	bool IsStunned() { return stunTimeLeft > 0; };
-	void SetAnimation(PlayerAnimationId animId);
 
 private:
 	void TickMovement(float deltaTime);
 	void TickJumpFall(float deltaTime);
 	void TickFire(float deltaTime);
+
+	void UpdateAnimation(PlayerAnimationId animId);
 
 	// VARIABLES
 public:

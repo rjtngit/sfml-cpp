@@ -18,8 +18,8 @@ public:
 
 	Vector2 WorldToScreenPoint(Vector2 worldPosition) const;
 
-	void DrawSprite(std::string texturePath, Vector2 position, RenderPosition renderPos = RenderPosition::WORLD);
-	void DrawSpriteCropped(std::string texturePath, Vector2 position, Rect crop, RenderPosition renderPos = RenderPosition::WORLD);
+	void DrawSprite(std::string texturePath, Vector2 position, bool flipX, RenderPosition renderPos = RenderPosition::WORLD);
+	void DrawSpriteCropped(std::string texturePath, Rect textureCrop, Vector2 position, bool flipX, RenderPosition renderPos = RenderPosition::WORLD);
 	void DrawRect(Vector2 position, Vector2 size, RenderPosition renderPos = RenderPosition::WORLD);
 	void DrawText(std::string text, std::string fontPath, Vector2 position, RenderPosition renderPos = RenderPosition::SCREEN);
 

@@ -31,6 +31,9 @@ public:
 	LOADABLE_BOOL(visible)
 	bool visible = true;
 
+	LOADABLE_BOOL(flipX)
+	bool flipX = false;
+
 	LOADABLE_BOOL(cropTexture)
 	bool cropTexture = false;
 
