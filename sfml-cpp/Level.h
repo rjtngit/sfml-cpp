@@ -15,6 +15,7 @@ public:
 	void LoadData();
 
 	std::weak_ptr<GameObject> SpawnObject(std::string name, float x, float y);
+	std::weak_ptr<GameObject> SpawnObjectFromFile(std::string path);
 	std::weak_ptr<GameObject> SpawnObjectFromFile(std::string path, float overrideX, float overrideY);
 	std::weak_ptr<GameObject> SpawnObjectFromFile(std::string path, Vector2 overridePosition);
 

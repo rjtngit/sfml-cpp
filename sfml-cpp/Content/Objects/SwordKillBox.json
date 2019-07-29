@@ -1,0 +1,14 @@
+{
+    "name" : "SwordKillBox",
+    "components" : [
+    	{
+    		"_class" : "SwordKillBoxComponent",
+    		"delay" : 0.1
+    	},
+    	{
+    		"_class" : "BoxColliderComponent",
+    		"width" : 100.0,
+    		"height" : 130.0
+    	}
+    ]
+}

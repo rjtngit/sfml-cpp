@@ -1,0 +1,11 @@
+{
+    "name" : "UI_GameOverLabel",
+    "x" : 500,
+    "y" : 200,
+    "components" : [
+        {
+            "_class" : "UILabelComponent",
+            "text" : "Pink player wins!"
+        }
+    ]
+}

@@ -48,7 +48,7 @@ public:
 	InputState fire_down;
 	InputState fire_left;
 	InputState fire_right;
-	InputState dash;
+	InputState attack;
 	InputState jump;
 
 private:

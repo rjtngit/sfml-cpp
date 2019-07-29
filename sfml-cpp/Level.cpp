@@ -45,6 +45,15 @@ std::weak_ptr<GameObject> Level::SpawnObjectFromFile(std::string path, Vector2 o
 	return SpawnObjectFromFile(path, overridePosition.x, overridePosition.y);
 }
 
+std::weak_ptr<GameObject> Level::SpawnObjectFromFile(std::string path)
+{
+	std::shared_ptr<GameObject> obj = std::make_shared<GameObject>();
+	obj->InitFromFile(shared_from_this(), path);
+	objects.insert(obj);
+
+	return obj;
+}
+
 void Level::DestroyObject(std::weak_ptr<GameObject> obj)
 {
 	UnregisterForTick(obj);

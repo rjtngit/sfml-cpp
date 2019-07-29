@@ -46,7 +46,7 @@ void PlayerBulletComponent::Tick(float deltaTime)
 		{
 			// Hit other player
 			auto hitPlayer = pHitPlayer.lock();
-			hitPlayer->Hit();
+			hitPlayer->HitByBullet();
 			level->DestroyObject(go);
 		}
 

@@ -11,7 +11,7 @@
             "spritePath" : "Sprites/player_idle.png",
             "renderOrder" : 100,
             "offsetY" : -10.0,
-            "offsetX" : -20.0
+            "anchorX": 0.5
         },
         {
             "_class" : "AnimatedSpriteComponent",
@@ -19,17 +19,54 @@
             "spritePath" : "Sprites/player_run.png",
             "renderOrder" : 100,
             "offsetY" : -24.0,
-            "offsetX" : -50.0,
             "rows" : 2,
             "cols" : 7,
             "texWidth" : 1050,
             "texHeight" : 300,
-            "frameTime" : 0.08
+            "frameTime" : 0.08,
+            "anchorX": 0.5
+        },
+        {
+            "_class" : "AnimatedSpriteComponent",
+            "name" : "attack",
+            "spritePath" : "Sprites/player_attack.png",
+            "renderOrder" : 100,
+            "offsetY" : -92.0,
+            "offsetX" : 40.0,
+            "rows" : 2,
+            "cols" : 3,
+            "texWidth" : 600,
+            "texHeight" : 400,
+            "frameTime" : 0.09,
+            "anchorX": 0.5
+        },
+        {
+            "_class" : "SpriteComponent",
+            "name" : "hit",
+            "spritePath" : "Sprites/player_hit.png",
+            "renderOrder" : 100,
+            "offsetY" : -10.0,
+            "anchorX": 0.5
+        },
+        {
+            "_class" : "AnimatedSpriteComponent",
+            "name" : "stunned",
+            "spritePath" : "Sprites/player_stunned.png",
+            "renderOrder" : 100,
+            "offsetY" : -40.0,
+            "offsetX" : 0.0,
+            "rows" : 1,
+            "cols" : 3,
+            "texWidth" : 300,
+            "texHeight" : 150,
+            "frameTime" : 0.5,
+            "anchorX": 0.5
         },
         {
             "_class" : "BoxColliderComponent",
-            "width" : 45.0,
-            "height" : 100.0
+            "width" : 44.0,
+            "height" : 100.0,
+            "offsetX" : -22.0
         }
     ]
 }

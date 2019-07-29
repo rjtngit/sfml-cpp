@@ -9,9 +9,10 @@ enum class PlayerAnimationId
 {
 	IDLE,
 	RUN,
-	STUNNED,
 	ATTACK,
-
+	HIT,
+	STUNNED,
+	DEATH,
 };
 
 class PlayerComponent : public GameComponent
@@ -22,15 +23,18 @@ public:
 	void Start() override;
 	void Tick(float deltaTime) override;
 
-	void Hit();
-	bool IsStunned() { return stunTimeLeft > 0; };
+	void HitByBullet();
+	void HitBySword();
+	bool IsFullyStunned() { return stunPerc >= 1.0f; };
+	bool IsAttacking() { return attackTimeLeft > 0;  }
 
 private:
 	void TickMovement(float deltaTime);
 	void TickJumpFall(float deltaTime);
 	void TickFire(float deltaTime);
+	void TickAttack(float deltaTime);
 
-	void UpdateAnimation(PlayerAnimationId animId);
+	void UpdateAnimation();
 
 	// VARIABLES
 public:
@@ -61,8 +65,12 @@ private:
 	Vector2 velocity;
 	bool isJumping = false;
 	bool isGrounded = false;
-	float fireCooldown = 0.0f;
+	float fireCooldownRemaining = 0.0f;
+	float fireOverheatRemaining = 0.0f;
+	float attackTimeLeft = 0.0f;
+	bool attackLeftDirection = false;
+	bool playHit = false;
 
-	float stunTimeLeft = 0.0f;
+	float stunPerc = 0.0f;
 };
 

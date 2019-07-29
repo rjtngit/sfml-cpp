@@ -11,6 +11,8 @@
 #include "BlockingComponent.h"
 #include "AudioComponent.h"
 #include "SpriteComponent.h"
+#include "AnimatedSpriteComponent.h"
+#include "SwordKillBoxComponent.h"
 
 
 
@@ -47,23 +49,47 @@ void PlayerComponent::Tick(float deltaTime)
 	auto level = go->GetLevel().lock();
 	auto collider = go->GetComponent<BoxColliderComponent>().lock();
 
-	stunTimeLeft -= deltaTime;
+	stunPerc -= 0.3f * deltaTime;
+	if (stunPerc < 0)
+	{
+		stunPerc = 0;
+	}
 
 	// Poll input / update position
 	TickMovement(deltaTime);
 	TickJumpFall(deltaTime);
 	TickFire(deltaTime);
+	TickAttack(deltaTime);
 
 	// Update animation
-	UpdateAnimation(isGrounded && velocity.x != 0 ? PlayerAnimationId::RUN : PlayerAnimationId::IDLE);
+	UpdateAnimation();
 }
 
-void PlayerComponent::Hit()
+void PlayerComponent::HitByBullet()
 {
-	stunTimeLeft = 0.8f;
+	stunPerc += 0.1f;
+	playHit = true;
+
+	if (stunPerc > 1.4f)
+	{
+		stunPerc = 1.4f;
+	}
 }
 
+void PlayerComponent::HitBySword()
+{
+	if (IsFullyStunned())
+	{
+		auto go = GetGameObject().lock();
+		auto transform = go->GetTransform().lock();
+		auto level = go->GetLevel().lock();
 
+		level->SpawnObjectFromFile(Paths::GetObjectPath("UI_GameOverLabel.json"));
+
+		level->DestroyObject(go);
+	}
+	
+}
 
 void PlayerComponent::TickMovement(float deltaTime)
 {
@@ -75,21 +101,21 @@ void PlayerComponent::TickMovement(float deltaTime)
 	Vector2 snapshotPosition = transform->Position;
 
 	// Get movement input
-	if (!IsStunned() && input->move_right.GetState())
+	if (!IsFullyStunned() && input->move_right.GetState())
 	{
 		velocity.x += acceleration * deltaTime;
-		if (velocity.x > moveSpeed)
+		if (velocity.x > moveSpeed * (1 - stunPerc))
 		{
-			velocity.x = moveSpeed;
+			velocity.x = moveSpeed * (1 - stunPerc);
 		}
 
 	}
-	else if (!IsStunned() && input->move_left.GetState())
+	else if (!IsFullyStunned() && input->move_left.GetState())
 	{
 		velocity.x -= acceleration * deltaTime;
-		if (velocity.x < -moveSpeed)
+		if (velocity.x < -moveSpeed * (1 - stunPerc))
 		{
-			velocity.x = -moveSpeed;
+			velocity.x = -moveSpeed * (1 - stunPerc);
 		}
 	}
 	else
@@ -148,7 +174,7 @@ void PlayerComponent::TickJumpFall(float deltaTime)
 	Vector2 snapshotPosition = transform->Position;
 
 	// Do jump
-	if (!IsStunned() && input->jump.GetState())
+	if (!IsFullyStunned() && input->jump.GetState())
 	{
 		if (!isJumping && isGrounded)
 		{
@@ -192,9 +218,10 @@ void PlayerComponent::TickFire(float deltaTime)
 
 	Vector2 fireDirection;
 	bool isFiring = false;
-	fireCooldown -= deltaTime;
+	fireCooldownRemaining -= deltaTime;
+	fireOverheatRemaining -= deltaTime;
 
-	if (!IsStunned())
+	if (fireOverheatRemaining <= 0 && !IsFullyStunned() && !IsAttacking())
 	{
 		if (input->fire_up.GetState())
 		{
@@ -219,14 +246,14 @@ void PlayerComponent::TickFire(float deltaTime)
 	}
 	
 
-	if (isFiring && fireCooldown <= 0.0f)
+	if (isFiring && fireCooldownRemaining <= 0.0f)
 	{
 		auto bulletGo = level->SpawnObjectFromFile(Paths::GetObjectPath("PlayerBullet.json"), transform->Position).lock();
 		auto bullet = bulletGo->GetComponent<PlayerBulletComponent>().lock();
 		bullet->direction = fireDirection;
 		bullet->playerId = playerId;
 
-		fireCooldown = 1.2f;
+		fireCooldownRemaining = 0.1f;
 
 		// Play fire audio
 		auto audio = pAudio_Fire.lock();
@@ -235,21 +262,97 @@ void PlayerComponent::TickFire(float deltaTime)
 
 }
 
-void PlayerComponent::UpdateAnimation(PlayerAnimationId animId)
+void PlayerComponent::TickAttack(float deltaTime)
+{
+	auto go = GetGameObject().lock();
+	auto transform = go->GetTransform().lock();
+	auto input = pInput.lock();
+	auto level = go->GetLevel().lock();
+	auto collider = go->GetComponent<BoxColliderComponent>().lock();
+
+	attackTimeLeft -= deltaTime;
+
+	if (velocity.x != 0 && isGrounded)
+	{
+		attackLeftDirection = velocity.x < 0;
+	}
+	
+	if (!IsFullyStunned() && input->attack.GetState() && !IsAttacking())
+	{
+		attackTimeLeft = 0.3f;
+
+		Vector2 killPos = transform->Position;
+	
+		// hard-coding magic numbers for now because I want to go to sleep
+		if (attackLeftDirection)
+		{
+			killPos.x -= 150;
+		}
+		else
+		{
+			killPos.x += 50;
+		}
+		killPos.y -= 50;
+
+		auto killBoxGo = level->SpawnObjectFromFile(Paths::GetObjectPath("SwordKillBox.json"), killPos).lock();
+		auto killBox = killBoxGo->GetComponent<SwordKillBoxComponent>().lock();
+		killBox->playerId = playerId;
+	}
+}
+
+void PlayerComponent::UpdateAnimation()
 {
 	auto go = GetGameObject().lock();
 	auto sprites = go->GetComponents<SpriteComponent>();
 
+	PlayerAnimationId anim = PlayerAnimationId::IDLE;
+
+	
+	if (IsFullyStunned())
+	{
+		anim = PlayerAnimationId::STUNNED;
+	}
+	else if (IsAttacking())
+	{
+		anim = PlayerAnimationId::ATTACK;
+	}
+	else if (playHit)
+	{
+		playHit = false;
+		anim = PlayerAnimationId::HIT;
+	}
+	else if (isGrounded && velocity.x != 0)
+	{
+		anim = PlayerAnimationId::RUN;
+	}
+
 	for (auto pSprite : sprites)
 	{
 		auto sprite = pSprite.lock();
-		switch (animId)
+		switch (anim)
 		{
 		case PlayerAnimationId::IDLE:
 			sprite->visible = sprite->name == "idle";
 			break;
 		case PlayerAnimationId::RUN:
 			sprite->visible = sprite->name == "run";
+			break;
+		case PlayerAnimationId::ATTACK:
+			if (!sprite->visible)
+			{
+				auto animSprite = std::dynamic_pointer_cast<AnimatedSpriteComponent>(sprite);
+				if (animSprite)
+				{
+					animSprite->ResetToBeginning();
+				}
+			}
+			sprite->visible = sprite->name == "attack";
+			break;
+		case PlayerAnimationId::HIT:
+			sprite->visible = sprite->name == "hit";
+			break;
+		case PlayerAnimationId::STUNNED:
+			sprite->visible = sprite->name == "stunned";
 			break;
 		default:
 			sprite->visible = false;

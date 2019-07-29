@@ -32,7 +32,7 @@ void BoxColliderComponent::Render(GameRenderer& target)
 	auto go = GetGameObject().lock();
 	auto transform = go->GetTransform().lock();
 
-	target.DrawRect(transform->Position, Vector2(width, height));
+	target.DrawRect(Vector2(transform->Position.x + offsetX, transform->Position.y + offsetY), Vector2(width, height));
 }
 
 bool BoxColliderComponent::Intersects(const BoxColliderComponent* other) const

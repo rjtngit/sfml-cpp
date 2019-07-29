@@ -165,7 +165,7 @@ void InputComponent::Tick(float deltaTime)
 	fire_down.Update(bFireDown);
 	fire_left.Update(bFireLeft);
 	fire_right.Update(bFireRight);
-	dash.Update(bDash);
+	attack.Update(bDash);
 	jump.Update(bJump);
 }
 

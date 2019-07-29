@@ -16,15 +16,17 @@ Vector2 GameRenderer::WorldToScreenPoint(Vector2 worldPosition) const
 	return Vector2::WorldToScreenPoint(worldPosition, cameraTarget, nativeResolution);
 }
 
-void GameRenderer::DrawSprite(std::string texturePath, Vector2 position, bool flipX, RenderPosition renderPos /*= RenderPosition::WORLD*/)
+void GameRenderer::DrawSprite(std::string texturePath, Vector2 position, bool flipX, Vector2 anchor, RenderPosition renderPos /*= RenderPosition::WORLD*/)
 {
 	Vector2 screenPos = WorldToScreenPoint(position);
 	const sf::Texture& texture = GetTexture(texturePath);
 
 	if (flipX)
 	{
-		screenPos.x += texture.getSize().x;
+		anchor.x = -anchor.x;
 	}
+	screenPos.x -= texture.getSize().x * anchor.x;
+
 
 	if (screenPos.x < - (int) texture.getSize().x || screenPos.y < -(int) texture.getSize().y || screenPos.x > nativeResolution.x || screenPos.y > nativeResolution.y)
 	{
@@ -42,15 +44,17 @@ void GameRenderer::DrawSprite(std::string texturePath, Vector2 position, bool fl
 	renderWindow->draw(sprite);
 }
 
-void GameRenderer::DrawSpriteCropped(std::string texturePath, Rect crop, Vector2 position, bool flipX, RenderPosition renderPos /*= RenderPosition::WORLD*/)
+void GameRenderer::DrawSpriteCropped(std::string texturePath, Rect crop, Vector2 position, bool flipX, Vector2 anchor, RenderPosition renderPos /*= RenderPosition::WORLD*/)
 {
 	Vector2 screenPos = WorldToScreenPoint(position);
 	const sf::Texture& texture = GetTexture(texturePath);
 
 	if (flipX)
 	{
-		screenPos.x += crop.width;
+		anchor.x = -anchor.x;
 	}
+	screenPos.x -= crop.width * anchor.x;
+
 
 	if (screenPos.x < -(int)texture.getSize().x || screenPos.y < -(int)texture.getSize().y || screenPos.x > nativeResolution.x || screenPos.y > nativeResolution.y)
 	{
@@ -76,7 +80,7 @@ void GameRenderer::DrawRect(Vector2 position, Vector2 size, RenderPosition rende
 	if (screenPos.x < -size.x || screenPos.y < size.y || screenPos.x > nativeResolution.x || screenPos.y > nativeResolution.y)
 	{
 		// cull
-		return;
+	//	return;
 	}
 
 	sf::RectangleShape rectangle(sf::Vector2f(size.x, size.y));

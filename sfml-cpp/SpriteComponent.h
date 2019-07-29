@@ -28,6 +28,12 @@ public:
 	LOADABLE_FLOAT(offsetY)
 	float offsetY = 0.0f;
 
+	LOADABLE_FLOAT(anchorX)
+	float anchorX = 0;
+
+	LOADABLE_FLOAT(anchorY)
+	float anchorY = 0;
+
 	LOADABLE_BOOL(visible)
 	bool visible = true;
 

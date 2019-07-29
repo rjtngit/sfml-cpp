@@ -16,6 +16,7 @@ void AnimatedSpriteComponent::Start()
 		cropHeight = texHeight / rows;
 	}
 
+	frameTimeRemaining = frameTime;
 
 	EnableTick(true);
 }
@@ -45,4 +46,11 @@ void AnimatedSpriteComponent::Tick(float deltaTime)
 		cropTop = cropHeight * currentRow;
 
 	}
+}
+
+void AnimatedSpriteComponent::ResetToBeginning()
+{
+	currentCol = 0;
+	currentRow = 0;
+	frameTimeRemaining = frameTime;
 }

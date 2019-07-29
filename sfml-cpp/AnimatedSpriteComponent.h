@@ -10,6 +10,7 @@ public:
 	void Start() override;
 	void Tick(float deltaTime) override;
 
+	void ResetToBeginning();
 
 	// VARIABLES
 public:
@@ -19,6 +20,8 @@ public:
 	LOADABLE_INT(renderOrder)
 	LOADABLE_FLOAT(offsetX)
 	LOADABLE_FLOAT(offsetY)
+	LOADABLE_FLOAT(anchorX)
+	LOADABLE_FLOAT(anchorY)
 	LOADABLE_BOOL(visible)
 
 	LOADABLE_INT(rows)
