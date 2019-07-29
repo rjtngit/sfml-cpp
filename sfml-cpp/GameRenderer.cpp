@@ -11,12 +11,9 @@ GameRenderer::GameRenderer(std::shared_ptr<sf::RenderWindow> renderWindow, Vecto
 
 }
 
-Vector2 GameRenderer::WorldToScreenPoint(Vector2 worldPosition)
+Vector2 GameRenderer::WorldToScreenPoint(Vector2 worldPosition) const
 {
-	return Vector2(
-		worldPosition.x - cameraTarget.x + nativeResolution.x / 2.0,
-		worldPosition.y - cameraTarget.y + nativeResolution.y / 2.0
-	);
+	return Vector2::WorldToScreenPoint(worldPosition, cameraTarget, nativeResolution);
 }
 
 void GameRenderer::DrawSprite(std::string texturePath, Vector2 position, RenderPosition renderPos /*= RenderPosition::WORLD*/)
@@ -65,7 +62,7 @@ void GameRenderer::DrawText(std::string text, std::string fontPath, Vector2 posi
 	sf::Text sftext;
 	sftext.setFont(font);
 	sftext.setString(text);
-	sftext.setFillColor(sf::Color::White);
+	sftext.setFillColor(sf::Color::Red);
 	sftext.setPosition(position.x, position.y);
 
 	renderWindow->draw(sftext);

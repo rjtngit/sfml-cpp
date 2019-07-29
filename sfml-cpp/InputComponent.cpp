@@ -25,96 +25,138 @@ void InputComponent::Tick(float deltaTime)
 	bool bDash = false;
 	bool bJump = false;
 
-	// keyboard
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
+	if (playerId == 0)
 	{
-		bJump = true;
-	}
-
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
-	{
-		bMoveLeft = true;
-	}
-
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
-	{
-		bMoveRight = true;
-	}
-
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
-	{
-		bFireUp = true;
-	}
-
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
-	{
-		bFireDown = true;
-	}
-
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
-	{
-		bFireLeft = true;
-	}
-
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
-	{
-		bFireRight = true;
-	}
-
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
-	{
-		bDash = true;
-	}
-
-	// joysticks
-	// Hard-coded Xbox One button IDs for now
-	for (int i = 0; i < sf::Joystick::Count; i++)
-	{
-		if (sf::Joystick::isConnected(i))
+		// keyboard (p1)
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
 		{
-			if (sf::Joystick::getAxisPosition(i, sf::Joystick::Axis::X) > deadzone)
-			{
-				bMoveRight = true;
-			}
+			bJump = true;
+		}
 
-			if (sf::Joystick::getAxisPosition(i, sf::Joystick::Axis::X) < -deadzone)
-			{
-				bMoveLeft = true;
-			}
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
+		{
+			bMoveLeft = true;
+		}
 
-			if (sf::Joystick::isButtonPressed(i, 0))
-			{
-				bFireDown = true;
-			}
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
+		{
+			bMoveRight = true;
+		}
 
-			if (sf::Joystick::isButtonPressed(i, 1))
-			{
-				bFireRight = true;
-			}
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::I))
+		{
+			bFireUp = true;
+		}
 
-			if (sf::Joystick::isButtonPressed(i, 2))
-			{
-				bFireLeft = true;
-			}
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::K))
+		{
+			bFireDown = true;
+		}
 
-			if (sf::Joystick::isButtonPressed(i, 3))
-			{
-				bFireUp = true;
-			}
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::J))
+		{
+			bFireLeft = true;
+		}
 
-			if (sf::Joystick::getAxisPosition(i, sf::Joystick::Axis::Z) < -deadzone )
-			{
-				bDash = true;
-			}
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::L))
+		{
+			bFireRight = true;
+		}
 
-			if (sf::Joystick::getAxisPosition(i, sf::Joystick::Axis::Z) > deadzone)
-			{
-				bJump = true;
-			}
-
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
+		{
+			bDash = true;
 		}
 	}
+	else
+	{
+		// keyboard (p2)
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+		{
+			bJump = true;
+		}
 
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+		{
+			bMoveLeft = true;
+		}
+
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+		{
+			bMoveRight = true;
+		}
+
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Numpad8))
+		{
+			bFireUp = true;
+		}
+
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Numpad5))
+		{
+			bFireDown = true;
+		}
+
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Numpad4))
+		{
+			bFireLeft = true;
+		}
+
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Numpad6))
+		{
+			bFireRight = true;
+		}
+
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Numpad0))
+		{
+			bDash = true;
+		}
+	}
+	
+	// joysticks
+	// Hard-coded Xbox One button IDs for now
+	if (sf::Joystick::isConnected(playerId))
+	{
+		if (sf::Joystick::getAxisPosition(playerId, sf::Joystick::Axis::X) > deadzone)
+		{
+			bMoveRight = true;
+		}
+
+		if (sf::Joystick::getAxisPosition(playerId, sf::Joystick::Axis::X) < -deadzone)
+		{
+			bMoveLeft = true;
+		}
+
+		if (sf::Joystick::isButtonPressed(playerId, 0))
+		{
+			bFireDown = true;
+		}
+
+		if (sf::Joystick::isButtonPressed(playerId, 1))
+		{
+			bFireRight = true;
+		}
+
+		if (sf::Joystick::isButtonPressed(playerId, 2))
+		{
+			bFireLeft = true;
+		}
+
+		if (sf::Joystick::isButtonPressed(playerId, 3))
+		{
+			bFireUp = true;
+		}
+
+		if (sf::Joystick::getAxisPosition(playerId, sf::Joystick::Axis::Z) < -deadzone)
+		{
+			bDash = true;
+		}
+
+		if (sf::Joystick::getAxisPosition(playerId, sf::Joystick::Axis::Z) > deadzone)
+		{
+			bJump = true;
+		}
+
+	}
 
 	// Update states
 	move_left.Update(bMoveLeft);
@@ -126,3 +168,4 @@ void InputComponent::Tick(float deltaTime)
 	dash.Update(bDash);
 	jump.Update(bJump);
 }
+

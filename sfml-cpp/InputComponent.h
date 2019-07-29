@@ -36,6 +36,8 @@ public:
 	void Start() override;
 	void Tick(float deltaTime) override;
 
+	void SetPlayerId(int id) { this->playerId = id;  }
+
 	// VARIABLES
 public:
 	const float deadzone = 20.0f;
@@ -49,7 +51,6 @@ public:
 	InputState dash;
 	InputState jump;
 
-
-
-
+private:
+	int playerId = 0;
 };

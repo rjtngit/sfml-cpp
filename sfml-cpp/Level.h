@@ -6,10 +6,12 @@
 #include <memory>
 #include <unordered_set>
 
+class GameInstance;
+
 class Level : public std::enable_shared_from_this<Level>
 { 
 public:
-	Level(std::string path);
+	Level(const GameInstance* pGameInstance, std::string path);
 	void LoadData();
 
 	std::weak_ptr<GameObject> SpawnObject(std::string name, float x, float y);
@@ -32,9 +34,12 @@ public:
 	void SetCameraTarget(Vector2 target) { cameraTarget = target;  }
 	Vector2 GetCameraTarget() const { return cameraTarget; }
 
+	const GameInstance* GetGameInstance() const { return pGameInstance; };
 
 	// VARIABLES
 private:
+	const GameInstance* pGameInstance;
+
 	LevelData levelData;
 	Vector2 cameraTarget;
 

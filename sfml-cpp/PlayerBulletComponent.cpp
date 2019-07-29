@@ -4,8 +4,14 @@
 #include "GameObject.h"
 #include "TransformComponent.h"
 #include "Level.h"
-#include "WallComponent.h"
+#include "BlockingComponent.h"
 #include "EnemyComponent.h"
+
+void PlayerBulletComponent::Start()
+{
+	EnableTick(true);
+}
+
 
 void PlayerBulletComponent::Tick(float deltaTime)
 {
@@ -33,7 +39,7 @@ void PlayerBulletComponent::Tick(float deltaTime)
 			hitEnemy->Hit();
 			level->DestroyObject(go);
 		}
-		else if (!obj->GetComponent<WallComponent>().expired())
+		else if (!obj->GetComponent<BlockingComponent>().expired() && obj->GetComponent<BlockingComponent>().lock()->blockBullet)
 		{
 			// Hit wall
 			level->DestroyObject(go);
@@ -47,3 +53,4 @@ void PlayerBulletComponent::Tick(float deltaTime)
 	}
 
 }
+

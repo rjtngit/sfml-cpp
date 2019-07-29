@@ -3,7 +3,7 @@
     "components" : [
     	{
     		"_class" : "PlayerComponent",
-            "playerId" : 0
+            "playerId" : 1
     	},
     	{
     		"_class" : "SpriteComponent",

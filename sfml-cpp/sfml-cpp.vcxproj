@@ -152,6 +152,7 @@ XCOPY "$(SolutionDir)SFML-2.5.1\bin\openal32.dll" "$(TargetDir)" /S /Y /R
   <ItemGroup>
     <ClCompile Include="AudioComponent.cpp" />
     <ClCompile Include="BoxColliderComponent.cpp" />
+    <ClCompile Include="CameraControllerComponent.cpp" />
     <ClCompile Include="EnemyComponent.cpp" />
     <ClCompile Include="FloatingEnemyComponent.cpp" />
     <ClCompile Include="GameComponent.cpp" />
@@ -174,11 +175,12 @@ XCOPY "$(SolutionDir)SFML-2.5.1\bin\openal32.dll" "$(TargetDir)" /S /Y /R
     <ClCompile Include="UIFPSLabelComponent.cpp" />
     <ClCompile Include="UILabelComponent.cpp" />
     <ClCompile Include="Vector2.cpp" />
-    <ClCompile Include="WallComponent.cpp" />
+    <ClCompile Include="BlockingComponent.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AudioComponent.h" />
     <ClInclude Include="BoxColliderComponent.h" />
+    <ClInclude Include="CameraControllerComponent.h" />
     <ClInclude Include="EnemyComponent.h" />
     <ClInclude Include="FloatingEnemyComponent.h" />
     <ClInclude Include="GameComponent.h" />
@@ -190,7 +192,7 @@ XCOPY "$(SolutionDir)SFML-2.5.1\bin\openal32.dll" "$(TargetDir)" /S /Y /R
     <ClInclude Include="GameRenderer.h" />
     <ClInclude Include="UIFPSLabelComponent.h" />
     <ClInclude Include="UILabelComponent.h" />
-    <ClInclude Include="WallComponent.h" />
+    <ClInclude Include="BlockingComponent.h" />
     <ClInclude Include="InputComponent.h" />
     <ClInclude Include="LevelData.h" />
     <ClInclude Include="PlayerBulletComponent.h" />

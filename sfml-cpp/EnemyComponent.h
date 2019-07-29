@@ -9,5 +9,5 @@ public:
 
 protected:
 	int damageTaken = 0;
-	int maxHp = 20;
+	int maxHp = 10;
 };

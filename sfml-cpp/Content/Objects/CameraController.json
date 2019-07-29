@@ -1,0 +1,8 @@
+{
+    "name" : "CameraController",
+    "components" : [
+        {
+            "_class" : "CameraControllerComponent"
+        }
+    ]
+}

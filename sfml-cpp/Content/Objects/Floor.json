@@ -1,12 +1,13 @@
 {
-    "name" : "Wall",
+    "name" : "Floor",
     "components" : [
         {
-            "_class" : "BlockingComponent"
+            "_class" : "BlockingComponent",
+            "blockBullet" : false
         },
     	{
     		"_class" : "SpriteComponent",
-    		"spritePath" : "Sprites/wall.png"
+    		"spritePath" : "Sprites/floor.png"
     	},
     	{
     		"_class" : "BoxColliderComponent",

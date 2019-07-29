@@ -8,7 +8,7 @@
 #include "BoxColliderComponent.h"
 #include "Paths.h"
 #include "PlayerBulletComponent.h"
-#include "WallComponent.h"
+#include "BlockingComponent.h"
 #include "AudioComponent.h"
 
 void PlayerComponent::Start()
@@ -19,6 +19,7 @@ void PlayerComponent::Start()
 
 	// Setup input
 	pInput = go->AddComponent<InputComponent>();
+	pInput.lock()->SetPlayerId(playerId);
 
 	// Load Audio
 	pAudio_Run = go->AddComponent<AudioComponent>();
@@ -48,8 +49,6 @@ void PlayerComponent::Tick(float deltaTime)
 	TickJumpFall(deltaTime);
 	TickFire(deltaTime);
 
-	// Update camera
-	level->SetCameraTarget(transform->Position);
 }
 
 void PlayerComponent::TickMovement(float deltaTime)
@@ -103,7 +102,7 @@ void PlayerComponent::TickMovement(float deltaTime)
 	transform->Position.x += velocity.x * deltaTime;
 
 	// Handle collision
-	if (collider->IsOverlappingComponent<WallComponent>())
+	if (collider->IsOverlappingComponent<BlockingComponent>())
 	{
 		transform->Position.x = snapshotPosition.x;
 		velocity.x = 0;
@@ -156,7 +155,7 @@ void PlayerComponent::TickJumpFall(float deltaTime)
 
 	// Collision handling
 	isGrounded = false;
-	if (collider->IsOverlappingComponent<WallComponent>())
+	if (collider->IsOverlappingComponent<BlockingComponent>())
 	{
 		if (transform->Position.y >= snapshotPosition.y)
 		{

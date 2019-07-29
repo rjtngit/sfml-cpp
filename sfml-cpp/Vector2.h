@@ -1,10 +1,16 @@
 #pragma once
 
+class Level;
+
 struct Vector2
 {
+	// VARIABLES
 public:
 	static const Vector2 Zero;
+	static Vector2 WorldToScreenPoint(Vector2 worldPoint, Vector2 cameraTarget, Vector2 nativeResolution);
 
+	// METHODS
+public:
 	Vector2() {}
 	Vector2(float x, float y)
 	{
@@ -26,6 +32,7 @@ public:
 	{
 		return Vector2(x * v, y * v);
 	}
+
 
 // VARIABLES
 public:

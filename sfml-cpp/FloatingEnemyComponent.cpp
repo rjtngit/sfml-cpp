@@ -18,6 +18,8 @@ void FloatingEnemyComponent::Start()
 	pAudio = go->AddComponent<AudioComponent>();
 	auto audio = pAudio.lock();
 	audio->LoadClip(Paths::GetInContentPath("Audio/howie.wav"));
+
+	EnableTick(true);
 }
 
 void FloatingEnemyComponent::Tick(float deltaTime)

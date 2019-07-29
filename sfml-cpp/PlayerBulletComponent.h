@@ -5,7 +5,9 @@
 class PlayerBulletComponent : public GameComponent
 {
 	LOADABLE_CLASS(PlayerBulletComponent);
+
 public:
+	void Start() override;
 	void Tick(float deltaTime) override;
 
 	// VARIABLES

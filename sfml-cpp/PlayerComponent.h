@@ -20,6 +20,9 @@ private:
 
 	// VARIABLES
 public:
+	LOADABLE_INT(playerId)
+	float playerId = 0;
+
 	LOADABLE_FLOAT(moveSpeed)
 	float moveSpeed = 500.0f;
 
