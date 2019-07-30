@@ -13,6 +13,7 @@
 #include "SpriteComponent.h"
 #include "AnimatedSpriteComponent.h"
 #include "SwordKillBoxComponent.h"
+#include "RestartGameTimerComponent.h"
 
 
 
@@ -85,6 +86,8 @@ void PlayerComponent::HitBySword()
 		auto level = go->GetLevel().lock();
 
 		level->SpawnObjectFromFile(Paths::GetObjectPath("UI_GameOverLabel.json"));
+		auto timerGo = level->SpawnObject("GameRestartTimer", 0,0).lock();
+		timerGo->AddComponent<RestartGameTimerComponent>();
 
 		level->DestroyObject(go);
 	}

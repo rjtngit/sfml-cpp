@@ -27,6 +27,13 @@ void GameInstance::Update()
 
 	activeLevel->Update(dt);
 	window.Update();
+
+	if(restartTriggered)
+	{
+		restartTriggered = false;
+		activeLevel = std::make_shared<Level>(this, Paths::GetLevelPath(config.GetStartLevelFileName()));
+		activeLevel->LoadData();
+	}
 }
 
 void GameInstance::Render()
@@ -37,4 +44,9 @@ void GameInstance::Render()
 bool GameInstance::IsRunning() const
 {
 	return window.IsOpen();
+}
+
+void GameInstance::RestartGame()
+{
+	restartTriggered = true;
 }

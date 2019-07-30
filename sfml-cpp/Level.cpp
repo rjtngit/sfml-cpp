@@ -5,7 +5,7 @@
 #include <memory>
 #include "RenderRule.h"
 
-Level::Level(const GameInstance* pGameInstance, std::string path)
+Level::Level(GameInstance* pGameInstance, std::string path)
 	:
 	pGameInstance(pGameInstance),
 	levelData(path)

@@ -11,11 +11,13 @@ public:
 	void Update();
 	void Render();
 	bool IsRunning() const;
-	const GameConfig GetGameConfig() const;
+	void RestartGame();
+	const GameConfig GetGameConfig() const { return config; }
 
 private:
 	std::shared_ptr<Level> activeLevel;
 	GameWindow window;
 	sf::Clock deltaClock;
 	GameConfig config;
+	bool restartTriggered = false;
 };
